@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css.css">
+  <title>TELEDEPORTES</title>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker_bar">
+    <div class="ticker_label">Ultima hora</div>
+    <div class="ticker_inner">
+      <div class="ticker_track">
+        <span>COLOMBIA rumbo al Mundial 2026</span><span>Fichajes clave en la Liga BetPlay</span>
+        <span>Final de la Copa América sub-23</span><span>Estadio listo para la preparación mundialista</span>
+        <span>COLOMBIA rumbo al Mundial 2026</span><span>Fichajes clave en la Liga BetPlay</span>
+        <span>Final de la Copa América sub-23</span><span>Estadio listo para la preparación mundialista</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header_top">
+      <div class="logo_top">
+        <a href="javascript:void(0)" class="logo_area" onclick="goHome()">
+          <img src="logo.png" alt="TELEDEPORTES" class="logo_img" style="height:80px;width:auto;max-width:260px;" onerror="this.style.display='none'">
+        </a>
+      </div>
+      <div class="colecctions">
+        <a href="https://web.whatsapp.com/" class="bnt_contac" target="_blank" rel="noopener">CONTÁCTANOS</a>
+      </div>
+    </div>
+    <nav class="links_navegation">
+      <div class="nav_inner">
+        <ul class="nav_linka">
+          <li class="nav_list"><a href="javascript:void(0)" class="active" onclick="showHome();setActive(this)">INICIO</a></li>
+          <li class="nav_list"><a href="javascript:void(0)" onclick="showHome('noticias');setActive(this)">NOTICIAS</a></li>
+          <li class="nav_list"><a href="javascript:void(0)" onclick="showHome('deportes');setActive(this)">DEPORTES</a></li>
+          <li class="nav_list"><a href="javascript:void(0)" onclick="showHome('cultura');setActive(this)">CULTURA</a></li>
+          <li class="nav_list"><a href="javascript:void(0)" onclick="showHome('politica');setActive(this)">POLÍTICA</a></li>
+          <li class="nav_list"><a href="javascript:void(0)" onclick="showHome('todas');setActive(this)">TODAS</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HOME -->
+  <div class="homePage" style="padding:0;">
+
+    <!-- HERO -->
+    <div class="rj_hero_section">
+      <div class="rj_hero_inner">
+
+        <!-- IZQUIERDA: REPRODUCTOR VIDEO EN VIVO HLS -->
+        <div class="rj_hero_big" id="heroFeaturedNews" style="cursor:default; overflow:hidden; background:#000; padding:0; position:relative; aspect-ratio:16/9; min-height:unset;">
+          <div style="position:absolute; inset:0; width:100%; height:100%;">
+
+            <!-- VIDEO -->
+            <video id="heroLiveVideo"
+       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"
+       poster="logo.png"
+       playsinline
+       muted>
+            </video>
+
+            <!-- OVERLAY PLAY (visible hasta que empiece) -->
+            <div id="heroVideoOverlay"
+                 style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.55);cursor:pointer;"
+                 onclick="heroStartLive()">
+              <div style="width:64px;height:64px;border-radius:50%;background:var(--c-accent);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,87,184,.45);margin-bottom:12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <polygon points="6,3 21,12 6,21" fill="white"/>
+                </svg>
+              </div>
+              <span style="color:#fff;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">▶ EN VIVO</span>
+            </div>
+
+            <!-- BADGE EN VIVO + BOTÓN STOP (visible cuando reproduce) -->
+            <div id="heroLiveBadge"
+                 style="display:none;position:absolute;top:12px;left:12px;align-items:center;gap:8px;">
+              <span style="background:var(--c-accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.12em;padding:4px 10px;border-radius:3px;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;">
+                <span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.2s infinite;display:inline-block;"></span>EN VIVO
+              </span>
+              <button onclick="heroStopLive()"
+                      style="background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:3px;cursor:pointer;letter-spacing:.06em;">
+                ⏹ PARAR
+              </button>
+            </div>
+
+            <!-- CONTROLES DE VOLUMEN (visible cuando reproduce) -->
+            <div id="heroVolRow"
+                 style="display:none;position:absolute;bottom:10px;right:12px;display:none;align-items:center;gap:6px;">
+              <span style="color:#fff;font-size:13px;">🔊</span>
+              <input type="range" min="0" max="1" step="0.05" value="0.8"
+                     style="accent-color:var(--c-accent);width:90px;cursor:pointer;"
+                     onchange="document.getElementById('heroLiveVideo').volume=this.value">
+            </div>
+
+          </div>
+        </div>
+
+        <!-- DERECHA: 4 NOTICIAS -->
+        <div class="rj_hero_side" id="heroSide"></div>
+
+      </div>
+    </div>
+
+      <!-- ══ SECCIÓN NOTICIAS EN VIDEO ══ -->
+    <div id="videoSection" style="display:none;">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">
+            Videos del Mundial y Deportes
+            <span class="rj_vbadge">&#9654; VIDEO</span>
+          </h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="videoPrev" onclick="videoCarouselScroll(-1)">‹</button>
+            <button class="rj_carousel_btn" id="videoNext" onclick="videoCarouselScroll(1)">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer">
+          <div class="rj_carousel_track" id="videoGrid"></div>
+        </div>
+        <div class="rj_carousel_footer">
+          <span class="rj_carousel_count" id="videoCount"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARRUSEL NOTICIAS -->
+    <div class="rj_carousel_section">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">Titulares del deporte <span class="rj_carousel_title_arrow">›</span></h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="carouselPrev" onclick="carouselScroll(-1)">‹</button>
+            <button class="rj_carousel_btn" id="carouselNext" onclick="carouselScroll(1)">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer">
+          <div class="rj_carousel_track" id="allNewsGrid"></div>
+        </div>
+        <div class="rj_carousel_footer">
+          <span class="rj_carousel_count" id="allNewsCount"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin .homePage -->
+
+  <!-- CATEGORÍAS -->
+  <div class="page_cat" id="catNoticias" style="display:none;">
+    <div class="cat_hero"><div class="cat_hero_icon">📰</div><div class="cat_hero_text"><h1><span class="cat-accent">N</span>OTICIAS</h1><p class="parraf">Todo lo que está pasando en Colombia y el mundo.</p></div></div>
+    <div class="page_wrap"><div class="cat_section_head"><span class="cat_section_head_title">Últimas Noticias</span><span class="cat_section_head_btn">TODAS</span></div><div class="cat_grid" id="gridNoticias"></div></div>
+    <div id="videoSectionNoticias" style="display:none;">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">Videos <span class="rj_vbadge">&#9654; VIDEO</span></h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="videoPrevNoticias" onclick="videoCarouselScroll(-1,'Noticias')">‹</button>
+            <button class="rj_carousel_btn" id="videoNextNoticias" onclick="videoCarouselScroll(1,'Noticias')">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer"><div class="rj_carousel_track" id="videoGridNoticias"></div></div>
+        <div class="rj_carousel_footer"><span class="rj_carousel_count" id="videoCountNoticias"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page_cat" id="catDeportes" style="display:none;">
+    <div class="cat_hero"><div class="cat_hero_icon">⚽</div><div class="cat_hero_text"><h1><span class="cat-accent">D</span>EPORTES</h1><p class="parraf">Resultados, fichajes y todo el deporte nacional e internacional.</p></div></div>
+    <div class="page_wrap"><div class="cat_section_head"><span class="cat_section_head_title">Últimas en Deportes</span><span class="cat_section_head_btn">TODAS</span></div><div class="cat_grid" id="gridDeportes"></div></div>
+    <div id="videoSectionDeportes" style="display:none;">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">Videos <span class="rj_vbadge">&#9654; VIDEO</span></h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="videoPrevDeportes" onclick="videoCarouselScroll(-1,'Deportes')">‹</button>
+            <button class="rj_carousel_btn" id="videoNextDeportes" onclick="videoCarouselScroll(1,'Deportes')">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer"><div class="rj_carousel_track" id="videoGridDeportes"></div></div>
+        <div class="rj_carousel_footer"><span class="rj_carousel_count" id="videoCountDeportes"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page_cat" id="catCultura" style="display:none;">
+    <div class="cat_hero"><div class="cat_hero_icon">🎭</div><div class="cat_hero_text"><h1><span class="cat-accent">C</span>ULTURA</h1><p class="parraf">Arte, música, cine y todo lo que mueve la identidad de nuestra región.</p></div></div>
+    <div class="page_wrap"><div class="cat_section_head"><span class="cat_section_head_title">Últimas en Cultura</span><span class="cat_section_head_btn">TODAS</span></div><div class="cat_grid" id="gridCultura"></div></div>
+    <div id="videoSectionCultura" style="display:none;">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">Videos <span class="rj_vbadge">&#9654; VIDEO</span></h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="videoPrevCultura" onclick="videoCarouselScroll(-1,'Cultura')">‹</button>
+            <button class="rj_carousel_btn" id="videoNextCultura" onclick="videoCarouselScroll(1,'Cultura')">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer"><div class="rj_carousel_track" id="videoGridCultura"></div></div>
+        <div class="rj_carousel_footer"><span class="rj_carousel_count" id="videoCountCultura"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page_cat" id="catPolitica" style="display:none;">
+    <div class="cat_hero"><div class="cat_hero_icon">🏛️</div><div class="cat_hero_text"><h1><span class="cat-accent">P</span>OLÍTICA</h1><p class="parraf">Decisiones, debates y análisis del panorama político colombiano.</p></div></div>
+    <div class="page_wrap"><div class="cat_section_head"><span class="cat_section_head_title">Últimas en Política</span><span class="cat_section_head_btn">TODAS</span></div><div class="cat_grid" id="gridPolitica"></div></div>
+    <div id="videoSectionPolitica" style="display:none;">
+      <div class="rj_carousel_inner">
+        <div class="rj_carousel_header">
+          <h2 class="rj_carousel_title">Videos <span class="rj_vbadge">&#9654; VIDEO</span></h2>
+          <div class="rj_carousel_nav">
+            <button class="rj_carousel_btn" id="videoPrevPolitica" onclick="videoCarouselScroll(-1,'Politica')">‹</button>
+            <button class="rj_carousel_btn" id="videoNextPolitica" onclick="videoCarouselScroll(1,'Politica')">›</button>
+          </div>
+        </div>
+        <div class="rj_carousel_outer"><div class="rj_carousel_track" id="videoGridPolitica"></div></div>
+        <div class="rj_carousel_footer"><span class="rj_carousel_count" id="videoCountPolitica"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page_cat" id="catTodas" style="display:none;">
+    <div class="cat_hero"><div class="cat_hero_icon">📋</div><div class="cat_hero_text"><h1><span class="cat-accent">T</span>ODAS LAS NOTICIAS</h1><p class="parraf">El archivo completo de TELEDEPORTES.</p></div></div>
+    <div class="page_wrap">
+      <div class="cat_section_head"><span class="cat_section_head_title">Archivo completo</span><span class="cat_section_head_btn" id="allNewsCountNav">0 artículos</span></div>
+      <div style="padding:24px 0;"><div id="allNewsGridPage"></div></div>
+    </div>
+  </div>
+
+  <div id="articlePage" style="display:none;"></div>
+  <div id="adminPage"></div>
+  <div id="rjToast"></div>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="rj_footer">
+    <div class="rj_footer_inner">
+
+      <div class="rj_footer_brand">
+        <img src="logo.png" alt="TELEDEPORTES" class="rj_footer_logo" onerror="this.style.display='none'">
+        <p class="rj_footer_desc">
+          La voz de TELEDEPORTES. Informamos, entretenemos y conectamos a nuestra comunidad con lo que más importa: noticias locales, deportes, cultura y política al instante.
+        </p>
+        <div class="rj_footer_social">
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" title="Facebook">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" title="Instagram">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.youtube.com" target="_blank" rel="noopener" title="YouTube">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0f172a"/></svg>
+          </a>
+          <a href="https://web.whatsapp.com/" target="_blank" rel="noopener" title="WhatsApp">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="rj_footer_col_title">Secciones</div>
+        <ul class="rj_footer_links">
+          <li><a href="javascript:void(0)" onclick="showHome();setActive(document.querySelector('.nav_list a'))">Inicio</a></li>
+          <li><a href="javascript:void(0)" onclick="showHome('noticias')">Noticias</a></li>
+          <li><a href="javascript:void(0)" onclick="showHome('deportes')">Deportes</a></li>
+          <li><a href="javascript:void(0)" onclick="showHome('cultura')">Cultura</a></li>
+          <li><a href="javascript:void(0)" onclick="showHome('politica')">Política</a></li>
+          <li><a href="javascript:void(0)" onclick="showHome('todas')">Todas las noticias</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="rj_footer_col_title">Contacto</div>
+        <div class="rj_footer_contact_item">
+          <span class="rj_footer_contact_icon">📍</span>
+          <span class="rj_footer_contact_text">CALI, Valle del Cauca, Colombia</span>
+        </div>
+        <div class="rj_footer_contact_item">
+          <span class="rj_footer_contact_icon">📻</span>
+          <span class="rj_footer_contact_text">Transmisión en vivo · FM</span>
+        </div>
+        <div class="rj_footer_contact_item">
+          <span class="rj_footer_contact_icon">💬</span>
+          <span class="rj_footer_contact_text">
+            <a href="https://web.whatsapp.com/" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+          </span>
+        </div>
+        <div class="rj_footer_contact_item">
+          <span class="rj_footer_contact_icon">📧</span>
+          <span class="rj_footer_contact_text">
+            <a href="mailto:info@teledeportes.net">info@teledeportes.net</a>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rj_footer_divider">
+      <span class="rj_footer_copy">© <span id="footerYear"></span> <span>TELEDEPORTES</span> · Todos los derechos reservados</span>
+      <span class="rj_footer_badge">En vivo · 24/7</span>
+    </div>
+  </footer>
+
+  <!-- BOTÓN ADMIN FLOTANTE -->
+  <button id="adminFloatBtn" onclick="abrirAdmin()" title="Administración">⚙</button>
+
+  <!-- REPRODUCTOR FIJO (barra inferior — se mantiene) -->
+
+  <script>
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+
+    // ── HERO VIDEO EN VIVO HLS ──
+    var _heroLiveHls = null;
+    var _heroLivePlaying = false;
+
+    function heroStopLive() {
+      var video   = document.getElementById('heroLiveVideo');
+      var overlay = document.getElementById('heroVideoOverlay');
+      var badge   = document.getElementById('heroLiveBadge');
+      var volRow  = document.getElementById('heroVolRow');
+      if (!video) return;
+      video.pause();
+      video.src = '';
+      video.load();
+      if (_heroLiveHls) { _heroLiveHls.destroy(); _heroLiveHls = null; }
+      _heroLivePlaying = false;
+      if (overlay) overlay.style.display = 'flex';
+      if (badge)   badge.style.display   = 'none';
+      if (volRow)  volRow.style.display  = 'none';
+    }
+
+    function heroToggleLive() {
+      if (_heroLivePlaying) { heroStopLive(); return; }
+      heroStartLive();
+    }
+
+    function heroStartLive() {
+      // ── Parar radio si está sonando ──
+      var video   = document.getElementById('heroLiveVideo');
+      var overlay = document.getElementById('heroVideoOverlay');
+      var badge   = document.getElementById('heroLiveBadge');
+      var volRow  = document.getElementById('heroVolRow');
+      var url     = 'https://streaming.totalmedios.com.co/live/chontico/index.m3u8';
+
+      overlay.style.display = 'none';
+      badge.style.display   = 'block';
+      volRow.style.display  = 'flex';
+      video.muted = false;
+
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url; video.load();
+        video.play().catch(function(){ video.muted = true; video.play(); });
+      } else if (window.Hls && Hls.isSupported()) {
+        if (_heroLiveHls) _heroLiveHls.destroy();
+        _heroLiveHls = new Hls({ enableWorker: false, lowLatencyMode: true });
+        _heroLiveHls.loadSource(url);
+        _heroLiveHls.attachMedia(video);
+        _heroLiveHls.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(function(){ video.muted = true; video.play(); });
+        });
+      } else {
+        video.src = url; video.load();
+        video.play().catch(function(){ video.muted = true; video.play(); });
+      }
+      _heroLivePlaying = true;
+    }
+
+    function heroLoadStream(audioEl) {
+      var url = 'https://streaming.totalmedios.com.co/live/chontico/index.m3u8';
+      if (audioEl.canPlayType('application/vnd.apple.mpegurl')) {
+        audioEl.src = url; audioEl.load();
+      } else if (window.Hls && Hls.isSupported()) {
+        if (audioEl._hls) audioEl._hls.destroy();
+        var hls = new Hls({ enableWorker: false });
+        hls.loadSource(url); hls.attachMedia(audioEl);
+        audioEl._hls = hls;
+      } else {
+        audioEl.src = url; audioEl.load();
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="articulos.js"></script>
+</body>
+</html>
