@@ -1,0 +1,50 @@
+# ── TeleDeportes monorepo ──────────────────────────────────────────────
+# teledeportes_server  (backend)   ·  teledeportes_dashboard  (frontend)
+# Each subproject also ships its own .gitignore; these are repo-wide safety nets.
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment / secrets — never commit. .env.example IS tracked.
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# TSS working copy (pulled by scripts/sync_tss.sh into .tts/)
+.tts/
+**/.tts/
+
+# Brand assets / scratch (not part of the apps; live under each app's own assets)
+/common/
+
+# Build / dist output
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs & debug
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+**/coverage/
+
+# Local Claude settings (machine-specific permissions, etc.)
+**/.claude/settings.local.json
+
+# Editor / OS cruft
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*~
+.prod

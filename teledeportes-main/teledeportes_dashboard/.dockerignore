@@ -1,0 +1,15 @@
+node_modules
+dist
+.env
+.env.local
+.env.production
+.env.staging
+.git
+.gitignore
+.DS_Store
+.tts
+.claude
+docs
+README.md
+CLAUDE.md
+__tests__

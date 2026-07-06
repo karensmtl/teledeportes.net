@@ -1,0 +1,161 @@
+/* ════════════ OvenPlayer (WebRTC) wrapper ════════════ */
+.live-player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.live-player__el { width: 100%; height: 100%; }
+
+.live-player__el .op-player,
+.live-player__el video {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* RTMP / notice state */
+.live-player--notice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 24px;
+}
+.live-player__notice-icon { color: var(--color-brand-orange); }
+.live-player__notice-title { margin: 0; font-weight: 700; color: #fff; }
+.live-player__notice-text { margin: 0; font-size: 13px; color: #94a3b8; max-width: 360px; line-height: 1.5; }
+
+/* ════════════ Custom HLS player ════════════ */
+.hplayer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+.hplayer--fs { border-radius: 0; }
+
+.hplayer__video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #000;
+}
+
+/* loading spinner */
+.hplayer__spinner {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 46px; height: 46px;
+    margin: -23px 0 0 -23px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    animation: hplayer-spin 0.8s linear infinite;
+    pointer-events: none;
+}
+@keyframes hplayer-spin { to { transform: rotate(360deg); } }
+
+/* big center play (paused) */
+.hplayer__bigplay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 116, 178, 0.92);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    transition: transform 0.15s, background 0.15s;
+}
+.hplayer__bigplay:hover { transform: translate(-50%, -50%) scale(1.06); background: var(--color-brand-blue); }
+.hplayer__bigplay svg { margin-left: 3px; }
+
+/* error overlay */
+.hplayer__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 20px;
+    background: rgba(2, 6, 23, 0.82);
+    color: #e2e8f0;
+}
+.hplayer__overlay-icon { color: var(--color-brand-orange); }
+.hplayer__overlay-title { margin: 0; font-weight: 700; color: #fff; }
+.hplayer__overlay-text { margin: 0 0 6px; font-size: 13px; color: #94a3b8; }
+
+/* control bar */
+.hplayer__bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+    opacity: 1;
+    transition: opacity 0.25s;
+}
+.hplayer--idle .hplayer__bar { opacity: 0; pointer-events: none; }
+.hplayer--idle { cursor: none; }
+
+.hplayer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.hplayer__btn:hover { background: rgba(255, 255, 255, 0.16); }
+
+.hplayer__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: #e11d48;
+    padding: 4px 9px;
+    border-radius: 6px;
+}
+.hplayer__live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    animation: hplayer-blink 1.2s infinite;
+}
+@keyframes hplayer-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hplayer__vol { display: flex; align-items: center; gap: 4px; }
+.hplayer__range { width: 84px; accent-color: var(--color-brand-blue); cursor: pointer; }
+.hplayer__spacer { flex: 1; }
+
+@media (max-width: 600px) {
+    .hplayer__range { width: 56px; }
+    .hplayer__bigplay { width: 60px; height: 60px; }
+}

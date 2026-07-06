@@ -1,0 +1,9 @@
+node_modules/
+storage/
+.env
+.env.local
+.env.production
+package-lock.json
+.DS_Store
+.tts/
+.claude/settings.local.json

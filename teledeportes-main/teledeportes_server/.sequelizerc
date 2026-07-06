@@ -1,0 +1,14 @@
+// .sequelizerc — used ONLY by sequelize-cli for scaffolding stubs
+// (`npx sequelize migration:create`, `npx sequelize seed:create`).
+//
+// Migrations are RUN by our own runner: `npm run migrate` -> scripts/migrate.js
+// (TSS 06). Do not run `sequelize db:migrate` — it would write to its own
+// SequelizeMeta table and bypass _meta_migrations.
+const path = require('node:path');
+
+module.exports = {
+    'config':         path.resolve('core', 'database', 'sequelize.config.js'),
+    'models-path':    path.resolve('data', 'models'),
+    'seeders-path':   path.resolve('data', 'seeders'),
+    'migrations-path': path.resolve('scripts', 'migrations'),
+};

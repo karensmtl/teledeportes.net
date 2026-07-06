@@ -1,0 +1,68 @@
+{
+    "name": "teledeportes-server",
+    "version": "0.1.0",
+    "private": true,
+    "description": "TeleDeportes backend — live sports streaming control plane + VOD catalog. TSS-conformant.",
+    "main": "index.js",
+    "engines": {
+        "node": ">=20.0.0",
+        "npm":  ">=10.0.0"
+    },
+    "scripts": {
+        "dev": "nodemon index.js",
+        "start": "node index.js",
+        "worker": "node worker.js",
+        "worker:dev": "nodemon worker.js",
+        "test": "node --test '__tests__/**/*.test.js'",
+        "tss:sync": "bash scripts/sync_tss.sh",
+        "postinstall": "bash scripts/sync_tss.sh || echo '[tss] sync skipped (offline?). Run: npm run tss:sync'",
+        "sync:examples": "node scripts/sync_examples.js",
+        "sync:users": "node scripts/sync_users.js",
+        "sync:videos": "node scripts/sync_videos.js",
+        "sync:channels": "node scripts/sync_channels.js",
+        "sync:noticias": "node scripts/sync_noticias.js",
+        "seed:users": "node scripts/seed_users.js",
+        "seed:videos": "node scripts/seed_videos.js",
+        "seed:channels": "node scripts/seed_channels.js",
+        "seed:noticias": "node scripts/seed_noticias.js",
+        "migrate": "node scripts/migrate.js",
+        "migration:create": "sequelize migration:create --name",
+        "db:up": "docker compose up -d db",
+        "db:down": "docker compose down",
+        "db:reset": "docker compose down -v && docker compose up -d db"
+    },
+    "dependencies": {
+        "@hapi/boom": "^10.0.1",
+        "bcrypt": "^6.0.0",
+        "bullmq": "^5.34.0",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^5.1.0",
+        "express-rate-limit": "^8.3.2",
+        "helmet": "^8.1.0",
+        "ioredis": "^5.4.1",
+        "joi": "^18.1.2",
+        "jsonwebtoken": "^9.0.3",
+        "multer": "^2.0.0",
+        "pg": "^8.16.3",
+        "pino": "^10.3.1",
+        "pino-http": "^11.0.0",
+        "sequelize": "^6.37.7"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0",
+        "sequelize-cli": "^6.6.2"
+    },
+    "tssVersion": {
+        "01-project-structure": "1.1.0",
+        "02-code-structure":    "1.0.0",
+        "03-data-structure":    "1.0.0",
+        "04-api-contract":      "1.0.0",
+        "05-security":          "1.0.0",
+        "06-operational":       "1.0.0",
+        "07-testing":           "0.1.0",
+        "08-git-workflow":      "0.1.0",
+        "09-documentation":     "0.1.0"
+    }
+}

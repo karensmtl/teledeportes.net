@@ -1,0 +1,730 @@
+/* TeleDeportes public landing — ambientado en el Mundial 2026.
+   Paleta = sistema de identidad FWC26: multicolor vibrante (magenta, naranja,
+   amarillo, lima, azul eléctrico, púrpura) sobre tinta oscura.
+   TSS vite/02 §"CSS class names" (explicit BEM). */
+
+.home {
+    --wc-ink:      #0a0e35;   /* navy profundo */
+    --wc-ink-soft: #182466;   /* navy panel/gradiente */
+    --wc-blue:     #3a4df5;   /* azul cobalto eléctrico */
+    --wc-green:    #16c79a;   /* verde esmeralda / teal */
+    --wc-gold:     #e0b341;   /* oro del trofeo */
+    --wc-spectrum: linear-gradient(105deg, #3a4df5 0%, #16c79a 100%);
+
+    margin: calc(-1 * var(--space-5));
+    display: flex;
+    flex-direction: column;
+    background: var(--wc-ink);
+    color: #fff;
+}
+
+/* ---- top nav ---- */
+
+.home__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-5);
+    background: rgba(7, 9, 26, 0.72);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.home__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+
+.home__brand:hover { text-decoration: none; }
+
+.home__logo {
+    height: 48px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.home__brand-name {
+    margin: 0;
+    font-family: var(--font-brand);
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    color: #fff;
+}
+
+.home__brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.04em;
+    color: #fff;
+    background: var(--wc-spectrum);
+}
+
+.home__brand-accent {
+    background: var(--wc-spectrum);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.home__nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+.home__nav-link {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.15s;
+}
+
+.home__nav-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.home__nav-badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: var(--wc-spectrum);
+}
+
+/* Hamburger — hidden on desktop, revealed in the mobile breakpoint. The bar
+   morphs into an X via its two pseudo-elements when the menu is open. */
+.home__burger {
+    display: none;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    cursor: pointer;
+    flex: none;
+}
+
+.home__burger-box {
+    position: relative;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+}
+
+.home__burger-box::before,
+.home__burger-box::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.2s ease;
+}
+
+.home__burger-box::before { top: -6px; }
+.home__burger-box::after  { top: 6px; }
+
+.home__burger-box--open { background: transparent; }
+.home__burger-box--open::before { transform: translateY(6px) rotate(45deg); }
+.home__burger-box--open::after  { transform: translateY(-6px) rotate(-45deg); }
+
+/* ---- live monitor (una sola pantalla grande) ---- */
+
+.home__live {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-5) var(--space-4);
+}
+
+.home__monitor {
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+    background: #000;
+}
+
+.home__monitor .live-player { border-radius: 0; }
+
+.home__monitor-offline {
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    text-align: center;
+    padding: var(--space-5);
+    background:
+        radial-gradient(75% 120% at 12% 0%, rgba(58, 77, 245, 0.45), transparent 55%),
+        radial-gradient(70% 100% at 92% 8%, rgba(22, 199, 154, 0.30), transparent 55%),
+        linear-gradient(160deg, var(--wc-ink-soft) 0%, var(--wc-ink) 75%);
+}
+
+.home__monitor-emblem {
+    width: clamp(110px, 15vw, 160px);
+    height: auto;
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.45));
+}
+
+.home__monitor-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wc-gold);
+}
+
+.home__monitor-text { margin: 0; color: rgba(255, 255, 255, 0.6); font-size: 14px; }
+
+.home__live-bar {
+    max-width: 1100px;
+    margin: var(--space-4) auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.home__live-now { display: flex; align-items: center; gap: var(--space-3); }
+
+.home__live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--wc-green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.home__live-dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: home-pulse 1.1s ease-in-out infinite; }
+
+.home__live-title {
+    font-family: var(--font-display);
+    margin: 0;
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+
+.home__live-desc { margin: 2px 0 0; color: rgba(255, 255, 255, 0.6); font-size: 14px; }
+
+.home__switcher { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.home__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.home__chip:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.home__chip--active { background: var(--wc-spectrum); color: #fff; border-color: transparent; }
+.home__chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--wc-green); }
+.home__chip--active .home__chip-dot { background: #fff; }
+
+/* ---- hero ---- */
+
+.home__hero {
+    position: relative;
+    overflow: hidden;
+    padding: 88px var(--space-5) 88px;
+    background:
+        radial-gradient(75% 120% at 12% 0%, rgba(58, 77, 245, 0.50), transparent 55%),
+        radial-gradient(70% 100% at 92% 8%, rgba(22, 199, 154, 0.34), transparent 55%),
+        linear-gradient(160deg, var(--wc-ink-soft) 0%, var(--wc-ink) 70%);
+}
+
+.home__hero-glow {
+    position: absolute;
+    inset: auto -10% -40% -10%;
+    height: 60%;
+    background: radial-gradient(60% 100% at 50% 100%, rgba(22, 199, 154, 0.30), transparent 70%);
+    pointer-events: none;
+}
+
+.home__hero-content {
+    position: relative;
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* ---- logo oficial FWC26 ----
+   PNG con transparencia real generado por scripts/cutout_logo.py a partir de
+   mundial.jpg (fondo negro eliminado). El "26" y "FIFA" son blancos. */
+
+.home__emblem {
+    display: block;
+    width: clamp(180px, 26vw, 240px);
+    height: auto;
+    margin: 0 auto var(--space-4);
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.45));
+}
+
+.home__hero-eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 auto var(--space-4);
+    width: fit-content;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.home__hero-title {
+    font-family: var(--font-display);
+    margin: 0 auto var(--space-4);
+    max-width: 18ch;
+    font-size: clamp(36px, 7vw, 68px);
+    line-height: 1.04;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.home__hero-accent {
+    background: var(--wc-spectrum);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.home__hero-sub {
+    margin: 0 auto var(--space-5);
+    max-width: 56ch;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.74);
+}
+
+/* ---- countdown ---- */
+
+.home__hero-countdown {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+
+.home__hero-countdown-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wc-gold);
+}
+
+.countdown {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 72px;
+    padding: var(--space-3) var(--space-2);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
+}
+
+.countdown__value {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.countdown__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.countdown--live {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 800;
+    background: var(--wc-green);
+    color: #fff;
+}
+
+.countdown__live-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    animation: home-pulse 1.1s ease-in-out infinite;
+}
+
+/* ---- hero CTAs ---- */
+
+.home__hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.home__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 15px;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.home__cta:hover { text-decoration: none; transform: translateY(-2px); }
+
+.home__cta--primary {
+    color: #fff;
+    background: linear-gradient(90deg, var(--wc-blue), var(--wc-green));
+    box-shadow: 0 10px 30px rgba(58, 77, 245, 0.40);
+}
+
+.home__cta-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--wc-gold);
+    animation: home-pulse 1.1s ease-in-out infinite;
+}
+
+.home__cta--ghost {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.home__cta--ghost:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* ---- host nations ---- */
+
+.home__hosts {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.home__host {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.home__host-flag { font-size: 18px; line-height: 1; }
+
+/* ---- sections ---- */
+
+.home__section {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-5);
+}
+
+.home__section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-5);
+}
+
+.home__section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #fff;
+}
+
+.home__section-pulse {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--wc-green);
+    box-shadow: 0 0 0 0 rgba(22, 199, 154, 0.6);
+    animation: home-pulse-ring 1.6s ease-out infinite;
+}
+
+.home__section-hint {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.home__grid {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.home__grid--channels {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.home__grid--videos {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.home__empty {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    padding: var(--space-4) 0;
+}
+
+/* ---- channel card ---- */
+
+.channel-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+
+.channel-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(58, 77, 245, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.channel-card__thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background:
+        radial-gradient(90% 120% at 20% 0%, rgba(58, 77, 245, 0.55), transparent 60%),
+        linear-gradient(135deg, #1a2a6e, #0a0e35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.channel-card__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.04em;
+}
+
+.channel-card__live {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--wc-green);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.channel-card__viewers {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.channel-card__body { padding: var(--space-4); }
+
+.channel-card__match {
+    margin: 0 0 var(--space-2);
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.channel-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 12px;
+}
+
+.channel-card__group {
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-weight: 700;
+    color: var(--wc-gold);
+    background: rgba(224, 179, 65, 0.14);
+}
+
+.channel-card__venue { color: rgba(255, 255, 255, 0.55); }
+
+/* ---- catalog card — dark surface override of catalog.css defaults,
+   scoped to the home so the (light) watch page keeps its own look ---- */
+
+.home .catalog-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home .catalog-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(58, 77, 245, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.home .catalog-card__thumb {
+    background: linear-gradient(135deg, #1a2a6e, #0a0e35);
+}
+
+.home .catalog-card__overlay {
+    background: linear-gradient(90deg, var(--wc-blue), var(--wc-green));
+    color: #fff;
+}
+
+.home .catalog-card__category { color: var(--wc-green); }
+
+.home .catalog-card__title { color: #fff; }
+
+/* ---- animations ---- */
+
+@keyframes home-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.45; transform: scale(0.75); }
+}
+
+@keyframes home-pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(22, 199, 154, 0.55); }
+    70%  { box-shadow: 0 0 0 10px rgba(22, 199, 154, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(22, 199, 154, 0); }
+}
+
+@media (max-width: 720px) {
+    /* Solo el isotipo en mobile — sin el texto de marca. */
+    .home__brand-name { display: none; }
+
+    .home__burger { display: inline-flex; }
+
+    /* Las opciones colapsan en un panel desplegable anclado al header. */
+    .home__nav-links {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: var(--space-4);
+        right: var(--space-4);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+        padding: var(--space-4);
+        background: rgba(10, 14, 53, 0.97);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+        z-index: 50;
+    }
+
+    .home__nav-links--open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .home__nav-link { font-size: 16px; }
+}
+
+@media (max-width: 640px) {
+    .countdown__unit { min-width: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home__nav-links { transition: none; }
+    .home__burger-box,
+    .home__burger-box::before,
+    .home__burger-box::after { transition: none; }
+}

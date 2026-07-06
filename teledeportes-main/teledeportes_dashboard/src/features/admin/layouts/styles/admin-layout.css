@@ -1,0 +1,78 @@
+.admin {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+    /* break out of the app-shell__main padding for a true full-height layout */
+    margin: calc(-1 * var(--space-5));
+}
+
+.admin__sidebar {
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.admin__brand { display: block; padding: var(--space-2) var(--space-2) var(--space-4); }
+.admin__brand:hover { text-decoration: none; }
+.admin__logo { height: 42px; width: auto; object-fit: contain; display: block; }
+
+.admin__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.admin__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin__link:hover { text-decoration: none; background: var(--color-bg); }
+
+.admin__link--active {
+    background: var(--color-primary-soft);
+    color: var(--color-brand-blue-dark);
+}
+
+.admin__link-icon { width: 18px; text-align: center; font-size: 14px; }
+
+.admin__user {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.admin__user-info { display: flex; flex-direction: column; overflow: hidden; }
+.admin__user-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.admin__user-role { font-size: 11px; color: var(--color-text-muted); text-transform: capitalize; }
+
+.admin__content {
+    padding: var(--space-6);
+    overflow-x: auto;
+}
+
+@media (max-width: 720px) {
+    .admin { grid-template-columns: 1fr; margin: calc(-1 * var(--space-5)); }
+    .admin__sidebar {
+        position: static; height: auto; flex-direction: row; flex-wrap: wrap;
+        align-items: center; border-right: none; border-bottom: 1px solid var(--color-border);
+    }
+    .admin__brand { padding: var(--space-2); }
+    .admin__nav { flex-direction: row; flex: 1 1 100%; order: 3; }
+    .admin__content { padding: var(--space-4); }
+}

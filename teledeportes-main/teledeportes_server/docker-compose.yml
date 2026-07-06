@@ -1,0 +1,165 @@
+# Fully containerized dev stack — nothing runs on the host:
+#   - app          Node API (hot reload via nodemon), http://localhost:${PORT:-4000}
+#   - worker       VOD transcode worker (BullMQ + ffmpeg)
+#   - db           Postgres 16
+#   - redis        BullMQ broker
+#   - media-nginx  Serves HLS/thumbnails, http://localhost:${MEDIA_NGINX_PORT:-8090}
+#   - pgadmin      Web UI at http://localhost:${PGADMIN_PORT:-5050}
+#
+# Usage:
+#   docker compose up -d --build         # build + start the whole stack
+#   docker compose up -d db              # start only the database
+#   docker compose logs -f app worker    # tail API + transcode logs
+#   docker compose exec app npm run sync:users    # schema sync (run once)
+#   docker compose exec app npm run sync:videos   # categories + videos tables
+#   docker compose exec app npm run seed:users    # bootstrap webmaster
+#   docker compose exec app npm run seed:videos   # default categories
+#   docker compose down                  # stop (data persists)
+#   docker compose down -v               # stop and wipe all volumes
+#
+# Credentials come from the project's .env. The app/worker read DB_HOST=db
+# (the compose service), overriding the .env value used by host-side tooling.
+services:
+    app:
+        build:
+            context: .
+            target: dev
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_app
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        env_file: .env
+        environment:
+            NODE_ENV: development
+            DB_HOST: db           # talk to the db service, not localhost
+            DB_PORT: 5432         # in-network port (host mapping is separate)
+            REDIS_HOST: redis     # talk to the redis service, not localhost
+            REDIS_PORT: 6379
+            PORT: 4000
+        ports:
+            - "${PORT:-4000}:4000"
+        volumes:
+            - .:/app                      # source for hot reload
+            - app_node_modules:/app/node_modules   # keep the Linux-native build
+            - media:/media                # shared VOD storage (originals + HLS)
+        healthcheck:
+            test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4000/livez >/dev/null || exit 1"]
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 20s
+
+    db:
+        image: postgres:16-alpine
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_db
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER:     ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB:       ${DB_DATABASE}
+            TZ:                ${TZ:-America/Bogota}
+            PGTZ:              ${TZ:-America/Bogota}
+        ports:
+            - "${DB_PORT:-5432}:5432"
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_pgadmin
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL:-admin@local}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+            PGADMIN_CONFIG_SERVER_MODE:           "False"
+            PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+            TZ: ${TZ:-America/Bogota}
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+            - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+
+    redis:
+        image: redis:7-alpine
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_redis
+        restart: unless-stopped
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - redis_data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+
+    worker:
+        build:
+            context: .
+            target: dev
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_worker
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        env_file: .env
+        environment:
+            NODE_ENV: development
+            DB_HOST: db
+            DB_PORT: 5432
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+        command: ["npx", "nodemon", "--legacy-watch", "worker.js"]
+        volumes:
+            - .:/app
+            - worker_node_modules:/app/node_modules
+            - media:/media
+
+    media-nginx:
+        image: nginx:1.27-alpine
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_media
+        restart: unless-stopped
+        ports:
+            - "${MEDIA_NGINX_PORT:-8090}:80"
+        volumes:
+            - media:/srv/media:ro
+            - ./docker/media-nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+    # OvenMediaEngine — live media server (RTMP/SRT ingest → WebRTC/WHEP + LL-HLS).
+    # Boots with its default config (app "app" already live-ready); the custom
+    # Server.xml (admission webhook) is mounted once generated under docker/ome/.
+    ome:
+        image: airensoft/ovenmediaengine:latest
+        container_name: ${COMPOSE_PROJECT_NAME:-app}_ome
+        restart: unless-stopped
+        environment:
+            OME_ADMISSION_SECRET: ${OME_ADMISSION_SECRET}
+        ports:
+            - "${OME_RTMP_PORT:-1935}:1935"                  # RTMP ingest
+            - "${OME_SRT_PORT:-9999}:9999/udp"              # SRT ingest
+            - "${OME_WEBRTC_PORT:-3333}:3333"               # WebRTC signalling + WHEP + LL-HLS
+            - "3478:3478"                                    # WebRTC TCP relay
+            - "10000-10004:10000-10004/udp"                 # WebRTC ICE (UDP)
+        volumes:
+            - ./docker/ome/Server.xml:/opt/ovenmediaengine/bin/origin_conf/Server.xml:ro
+
+volumes:
+    db_data:
+    pgadmin_data:
+    app_node_modules:
+    worker_node_modules:
+    redis_data:
+    media:
