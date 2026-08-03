@@ -63,7 +63,28 @@ npm run db:down                       # stop (data persists in volume)
 npm run db:reset                      # nuke volume and start fresh
 npm run migration:create -- add-foo   # scaffold scripts/migrations/<ts>-add-foo.js (sequelize-cli)
 npm run migrate                       # apply pending migrations (custom runner)
+npm run db:migrate:soft               # additive-only convergence (see below)
+npm run db:migrate:soft -- --dry-run  # print the plan, change nothing
 ```
+
+### Which schema tool to reach for
+
+| | What it does | Where |
+|---|---|---|
+| `sync:*` | `Model.sync({ alter: true })` — Sequelize emits whatever ALTERs it infers, **including dropping columns** the model no longer declares | dev only |
+| `db:migrate:soft` | additive subset: CREATE TABLE, ADD COLUMN, CREATE INDEX. Never drops, renames or retypes | dev + prod |
+| `migrate` | the explicit, reviewed, forward-only runner | anything non-additive |
+
+`db:migrate:soft` exists for the everyday case — a new nullable column landed and
+the table lacks it — without the blast radius of `alter: true`. It refuses
+anything it cannot do without touching existing rows (a NOT NULL column with no
+default on a populated table, a new primary key) and **reports** the rest:
+columns present in the DB but absent from the model, and nullability drift. That
+report is the to-do list for a real migration.
+
+It is idempotent, so a partial run is always safe to repeat, and it records each
+run in `_meta_sync` like the `sync:*` scripts. In production it still requires
+`SYNC_FORCE=yes`, per the TSS 06 guard.
 
 **pgAdmin** is included for local browsing. After `npm run db:up`:
 

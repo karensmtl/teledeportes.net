@@ -26,6 +26,7 @@
         "seed:channels": "node scripts/seed_channels.js",
         "seed:noticias": "node scripts/seed_noticias.js",
         "migrate": "node scripts/migrate.js",
+    "db:migrate:soft": "node scripts/db_migrate_soft.js",
         "migration:create": "sequelize migration:create --name",
         "db:up": "docker compose up -d db",
         "db:down": "docker compose down",

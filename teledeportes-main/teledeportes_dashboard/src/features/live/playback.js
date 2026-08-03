@@ -12,6 +12,22 @@ export function detectStreamKind(url) {
     return 'hls';
 }
 
+// A page served over HTTPS cannot open a `ws://` socket: browsers treat it as
+// active mixed content and block it outright — no auto-upgrade, and a WebSocket
+// never follows the 301 an https-only host would answer with. A misconfigured
+// VITE_LIVE_ENDPOINT would therefore kill WebRTC silently and drop the player
+// onto its LL-HLS fallback, so upgrade the scheme instead of failing.
+function secureBase(endpoint) {
+    if (!endpoint) return endpoint;
+    if (typeof window === 'undefined' || window.location?.protocol !== 'https:') return endpoint;
+    if (!/^ws:\/\//i.test(endpoint)) return endpoint;
+    console.warn(
+        `[live] VITE_LIVE_ENDPOINT usa ws:// en una página HTTPS (${endpoint}). ` +
+        'Se fuerza wss:// para evitar el bloqueo por contenido mixto — corrige la variable en el build.'
+    );
+    return endpoint.replace(/^ws:\/\//i, 'wss://');
+}
+
 // Resolves a channel to a normalized playback source the player can consume:
 //   { kind: 'hls'|'webrtc'|'rtmp'|'none', hlsUrl, webrtcUrl, llhlsUrl, rtmpUrl }
 // A channel linked to an external stream plays that URL (by detected kind).
@@ -28,7 +44,7 @@ export function resolveLiveSource(channel) {
         return { kind: 'hls', hlsUrl: url };
     }
 
-    const base = liveConfig.endpoint;
+    const base = secureBase(liveConfig.endpoint);
     if (base && channel.slug) {
         const ws = `${base.replace(/\/+$/, '')}/${channel.slug}`;
         const http = ws.replace(/^wss:/i, 'https:').replace(/^ws:/i, 'http:');
