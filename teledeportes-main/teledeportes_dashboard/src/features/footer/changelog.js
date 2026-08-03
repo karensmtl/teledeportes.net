@@ -3,6 +3,17 @@
 
 const CHANGELOG = [
     {
+        version: 'dp1.2',
+        date: '2026-08-03',
+        title: 'Logo de canal + navegación por control remoto',
+        notes: [
+            { type: 'feature',     text: 'Los canales tienen logo propio (PNG/WEBP/AVIF con transparencia): se sube y se quita desde /admin/channels' },
+            { type: 'improvement', text: 'El hero de la portada muestra el logo del canal en lugar del rótulo "en directo" y del nombre grande; el nombre queda debajo en letra pequeña' },
+            { type: 'feature',     text: 'Navegación por D-pad para pantalla de TV: flechas mueven el foco de forma espacial, OK activa y BACK vuelve atrás (webOS, Tizen, Android TV y teclado)' },
+            { type: 'improvement', text: 'Anillo de foco de alto contraste y auto-scroll del elemento enfocado, visible solo cuando manda el control remoto' },
+        ],
+    },
+    {
         version: 'dp1.1',
         date: '2026-05-16',
         title: 'Example feature + SimpleCrud',

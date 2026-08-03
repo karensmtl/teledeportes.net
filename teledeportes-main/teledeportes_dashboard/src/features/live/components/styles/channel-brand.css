@@ -1,0 +1,70 @@
+/* Channel identity — logo first, name small underneath. Sits over video, so
+   everything carries a shadow to stay legible on bright frames. */
+
+.channel-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    max-width: 78%;
+}
+
+.channel-brand__logo {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, .6));
+}
+
+.channel-brand--lg .channel-brand__logo { max-height: 128px; }
+.channel-brand--md .channel-brand__logo { max-height: 72px; }
+.channel-brand--sm .channel-brand__logo { max-height: 40px; }
+
+.channel-brand__name {
+    color: rgba(255, 255, 255, .88);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .8);
+}
+
+.channel-brand--sm .channel-brand__name { font-size: 11px; letter-spacing: .1em; }
+
+/* No logo uploaded: the name becomes the mark. */
+.channel-brand__wordmark {
+    color: #fff;
+    font-family: var(--f-serif, Georgia, serif);
+    font-size: 44px;
+    line-height: 1.1;
+    font-weight: 700;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .75);
+}
+
+.channel-brand--md .channel-brand__wordmark { font-size: 28px; }
+.channel-brand--sm .channel-brand__wordmark { font-size: 16px; }
+
+/* Over a light surface (card placeholders) the white-on-video treatment would
+   disappear — swap to brand colours and drop the shadows. */
+.channel-brand--on-light .channel-brand__logo { filter: none; }
+.channel-brand--on-light .channel-brand__name {
+    color: var(--c-muted, #718096);
+    text-shadow: none;
+}
+.channel-brand--on-light .channel-brand__wordmark {
+    color: var(--c-accent, #0057b8);
+    font-family: var(--f-display, Arial, sans-serif);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-shadow: none;
+    padding: 0 12px;
+}
+
+@media (max-width: 720px) {
+    .channel-brand--lg .channel-brand__logo { max-height: 84px; }
+    .channel-brand__wordmark { font-size: 30px; }
+    .channel-brand__name { font-size: 11px; }
+}

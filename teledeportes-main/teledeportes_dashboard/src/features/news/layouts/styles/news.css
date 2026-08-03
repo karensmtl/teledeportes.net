@@ -178,6 +178,27 @@
   gap: 6px;
   z-index: 10;
 }
+/* Channel identity in the hero: the logo IS the headline — no eyebrow label,
+   no big channel name. The name only repeats in small caps under the mark. */
+.heroBrand { margin-bottom: 22px; }
+.heroBrand--corner { margin-bottom: 0; }
+.heroPlayBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: .8em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 22px rgba(0,87,184,.45);
+  transition: transform var(--transition), background var(--transition);
+}
+.heroVideoOverlay:hover .heroPlayBtn,
+.heroVideoOverlay:focus-visible .heroPlayBtn { transform: scale(1.04); }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
 /* ════════════════════════════════════════════════════

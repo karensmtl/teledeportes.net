@@ -48,6 +48,12 @@ const ChannelSchema = {
         type: DataTypes.STRING(500),
         allowNull: true,
     },
+    // Admin-uploaded channel logo — the brand mark shown instead of the channel
+    // name (transparent PNG/WEBP/AVIF). Relative to MEDIA_ROOT, like the poster.
+    logo_path: {
+        type: DataTypes.STRING(500),
+        allowNull: true,
+    },
     sort_order: {
         type: DataTypes.INTEGER,
         allowNull: false,

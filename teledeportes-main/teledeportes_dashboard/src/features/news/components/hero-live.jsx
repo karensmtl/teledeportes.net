@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Hls from 'hls.js';
 
 import { resolveHeroHls } from '../../live/playback';
+import ChannelBrand from '../../live/components/channel-brand';
 
 // Home hero: plays the on-air channel's live signal inline (HLS via hls.js).
 // Falls back to an offline card (or a "watch on /vivo" card for streams that
@@ -53,12 +54,19 @@ export default function HeroLive({ channel }) {
 
                 {/* Playable channel: click-to-play overlay */}
                 {hlsUrl && !playing && (
-                    <div className="heroVideoOverlay" onClick={start}>
-                        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--c-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 20px rgba(0,87,184,.45)', marginBottom: 12 }}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="6,3 21,12 6,21" fill="white" /></svg>
+                    <div
+                        className="heroVideoOverlay"
+                        onClick={start}
+                        role="button"
+                        tabIndex={0}
+                        data-tv-focusable
+                        aria-label={`Ver ${channel?.name || 'el canal'} en directo`}
+                    >
+                        <ChannelBrand channel={channel} size="lg" className="heroBrand" />
+                        <div className="heroPlayBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polygon points="6,3 21,12 6,21" fill="currentColor" /></svg>
+                            Ver directo
                         </div>
-                        <span style={{ color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' }}>▶ EN VIVO</span>
-                        {channel?.name && <span style={{ color: 'rgba(255,255,255,.85)', fontSize: 12, marginTop: 6 }}>{channel.name}</span>}
                     </div>
                 )}
 
@@ -66,9 +74,11 @@ export default function HeroLive({ channel }) {
                     <>
                         <div className="heroLiveBadge" style={{ display: 'flex' }}>
                             <span style={{ background: 'var(--c-accent)', color: '#fff', fontSize: 11, fontWeight: 700, letterSpacing: '.12em', padding: '4px 10px', borderRadius: 3, textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff', animation: 'blink 1.2s infinite', display: 'inline-block' }} />EN VIVO{channel?.name ? ` · ${channel.name}` : ''}
+                                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff', animation: 'blink 1.2s infinite', display: 'inline-block' }} />EN VIVO
                             </span>
-                            <button onClick={stop} style={{ background: 'rgba(0,0,0,.65)', border: '1px solid rgba(255,255,255,.3)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 3, cursor: 'pointer', letterSpacing: '.06em' }}>⏹ PARAR</button>
+                            {/* The channel is identified by its logo, not by text. */}
+                            <ChannelBrand channel={channel} size="sm" className="heroBrand--corner" />
+                            <button onClick={stop} data-tv-focusable style={{ background: 'rgba(0,0,0,.65)', border: '1px solid rgba(255,255,255,.3)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 3, cursor: 'pointer', letterSpacing: '.06em' }}>⏹ PARAR</button>
                         </div>
                         <div className="heroVolRow" style={{ display: 'flex' }}>
                             <span style={{ color: '#fff', fontSize: 13 }}>🔊</span>
@@ -89,8 +99,8 @@ export default function HeroLive({ channel }) {
                 {/* On-air channel that can't play inline (WebRTC/RTMP): send to /vivo */}
                 {channel && !hlsUrl && (
                     <div className="heroVideoOverlay" style={{ position: 'relative' }}>
-                        <span style={{ color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10 }}>● EN VIVO · {channel.name}</span>
-                        <Link to={`/vivo/${channel.slug}`} className="bnt_contac" style={{ textDecoration: 'none' }}>Ver en vivo →</Link>
+                        <ChannelBrand channel={channel} size="lg" className="heroBrand" />
+                        <Link to={`/vivo/${channel.slug}`} className="bnt_contac" data-tv-focusable style={{ textDecoration: 'none' }}>Ver en vivo →</Link>
                     </div>
                 )}
 

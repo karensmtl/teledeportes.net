@@ -56,3 +56,24 @@ export function useSetChannelThumbnail() {
         onSuccess: () => qc.invalidateQueries({ queryKey: channelKeys.all }),
     });
 }
+
+// Channel brand mark (transparent PNG/WEBP/AVIF) — rendered instead of the name.
+export function useSetChannelLogo() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: async ({ id, file }) => {
+            const form = new FormData();
+            form.append('logo', file);
+            return (await api.post(`${CHANNELS_PATH}/${id}/logo`, form)).data;
+        },
+        onSuccess: () => qc.invalidateQueries({ queryKey: channelKeys.all }),
+    });
+}
+
+export function useRemoveChannelLogo() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: async (id) => (await api.delete(`${CHANNELS_PATH}/${id}/logo`)).data,
+        onSuccess: () => qc.invalidateQueries({ queryKey: channelKeys.all }),
+    });
+}

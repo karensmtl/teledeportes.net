@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 
 import { IconPlay } from '../../../common/icons';
+import ChannelBrand from './channel-brand';
 
 // Live channel card in the news-site aesthetic, linking to its watch page.
 export default function ChannelCard({ channel }) {
     return (
-        <Link to={`/vivo/${channel.slug}`} className={`live-card${channel.isOnAir ? ' live-card--on' : ''}`}>
+        <Link to={`/vivo/${channel.slug}`} data-tv-focusable className={`live-card${channel.isOnAir ? ' live-card--on' : ''}`}>
             <div className="live-card__thumb">
                 {channel.isOnAir
                     ? <span className="live-card__badge"><span className="live-card__dot" /> EN VIVO</span>
@@ -13,7 +14,7 @@ export default function ChannelCard({ channel }) {
                 <span className="live-card__play"><IconPlay size={20} /></span>
                 {channel.thumbnailUrl
                     ? <img className="live-card__img" src={channel.thumbnailUrl} alt={channel.name} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                    : <span className="live-card__ph">{channel.name}</span>}
+                    : <ChannelBrand channel={channel} size="md" className="live-card__brand channel-brand--on-light" />}
             </div>
             <div className="live-card__body">
                 <div className="live-card__cat">Canal en vivo</div>

@@ -13,7 +13,7 @@ export default function NewsCarousel({ title = 'Titulares del deporte', articles
             countLabel={countLabel}
         >
             {articles.map(a => (
-                <div className="rj_card" key={a.id} onClick={() => onOpen(a.id)}>
+                <div className="rj_card" key={a.id} onClick={() => onOpen(a.id)} role="button" tabIndex={0} data-tv-focusable>
                     <div className="rj_card_img">
                         <img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
                     </div>

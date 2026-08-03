@@ -128,6 +128,8 @@ docker compose down -v              # detener y borrar volúmenes
 | En vivo: canales + OvenMediaEngine (RTMP/SRT/WHIP → WebRTC/LL-HLS) | ✅ |
 | En vivo: CMS de canales + reproductor `/vivo` | ✅ |
 | Estudio web (emitir por WHIP desde el navegador / vMix) | ✅ |
+| Logo de canal (PNG/WEBP transparente) en hero y tarjetas | ✅ |
+| Navegación por control remoto / D-pad ([docs](docs/tv-navegacion.md)) | ✅ |
 | Multiview (2-3 canales simultáneos) | ⏳ pendiente |
 | Producción: HTTPS/TLS, CI/CD, tests, deploy | ⏳ pendiente |
 

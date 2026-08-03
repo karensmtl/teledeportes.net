@@ -44,7 +44,7 @@ export function ArticleView({ article, allArticles, onOpen, onBack, onCategory }
                     <h2 className="art-rel-heading"><span className="art-rel-line" />Artículos relacionados<span className="art-rel-line" /></h2>
                     <div className="art-rel-grid">
                         {related.length ? related.map(r => (
-                            <div className="art-rel-card" key={r.id} onClick={() => onOpen(r.id)}>
+                            <div className="art-rel-card" key={r.id} onClick={() => onOpen(r.id)} role="button" tabIndex={0} data-tv-focusable>
                                 <div className="art-rel-img">
                                     <img src={r.imageUrl} onError={(e) => { e.currentTarget.src = '/logo.png'; }} alt={r.title} />
                                     <span className="art-rel-cat">{r.category}</span>
@@ -107,7 +107,7 @@ export function VideoArticleView({ video, onBack, onOpenVideo, onCategory }) {
                     <h2 className="art-rel-heading"><span className="art-rel-line" />Más videos<span className="art-rel-line" /></h2>
                     <div className="art-rel-grid">
                         {more.map(v => (
-                            <div className="art-rel-card" key={v.id} onClick={() => onOpenVideo(v.id)} style={{ cursor: 'pointer' }}>
+                            <div className="art-rel-card" key={v.id} onClick={() => onOpenVideo(v.id)} role="button" tabIndex={0} data-tv-focusable style={{ cursor: 'pointer' }}>
                                 <div className="art-rel-img">
                                     <img src={`https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`} alt={v.titulo} />
                                     <span className="art-rel-cat">{v.categoria}</span>

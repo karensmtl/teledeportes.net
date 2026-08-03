@@ -19,13 +19,13 @@ export default function VideoCard({ video, isActive, onToggle, onOpen }) {
                         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', opacity: 1 }}
                     />
                 )}
-                <div className="rj_vcard_play_overlay" onClick={(e) => { e.stopPropagation(); onToggle(); }}>
+                <div className="rj_vcard_play_overlay" onClick={(e) => { e.stopPropagation(); onToggle(); }} role="button" tabIndex={0} data-tv-focusable aria-label={`Reproducir ${video.titulo}`}>
                     <div className="rj_vcard_play_btn">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polygon points="5,3 18,10 5,17" fill="white" /></svg>
                     </div>
                 </div>
             </div>
-            <div className="rj_vcard_body" onClick={onOpen}>
+            <div className="rj_vcard_body" onClick={onOpen} role="button" tabIndex={0} data-tv-focusable>
                 <div className="rj_vcard_cat">{video.categoria}</div>
                 <div className="rj_vcard_title">{video.titulo}</div>
                 <div className="rj_vcard_meta">{video.autor} · {video.fecha}</div>

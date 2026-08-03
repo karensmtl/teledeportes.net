@@ -76,7 +76,7 @@ export default function NewsSite() {
                                     <HeroLive key={liveChannel?.slug || 'offline'} channel={liveChannel} />
                                     <div className="rj_hero_side">
                                         {heroSide.map(a => (
-                                            <div className="rj_side_item" key={a.id} onClick={() => openArticle(a.id)}>
+                                            <div className="rj_side_item" key={a.id} onClick={() => openArticle(a.id)} role="button" tabIndex={0} data-tv-focusable>
                                                 <div className="rj_side_img">
                                                     <img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
                                                 </div>
@@ -125,7 +125,7 @@ export default function NewsSite() {
                                 <div style={{ padding: '24px 0' }}>
                                     <div className="allNewsGridPage">
                                         {articles.map(a => (
-                                            <div className="news_card" key={a.id} onClick={() => openArticle(a.id)} style={{ cursor: 'pointer' }}>
+                                            <div className="news_card" key={a.id} onClick={() => openArticle(a.id)} role="button" tabIndex={0} data-tv-focusable style={{ cursor: 'pointer' }}>
                                                 <div><img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} /></div>
                                                 <div className="new_card_cat">{a.category}</div>
                                                 <div className="new_card_title"><span>{a.title}</span></div>

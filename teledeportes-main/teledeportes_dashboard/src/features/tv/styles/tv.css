@@ -1,0 +1,44 @@
+/* ════════════════════════════════════════════════════
+   TV / D-PAD MODE
+   Applied to <html> while a remote (or keyboard arrows) is driving. Focus has
+   to be readable from three metres away, so the ring is thick, high-contrast
+   and doubled with a dark halo that survives on top of bright video frames.
+   ════════════════════════════════════════════════════ */
+
+:root {
+    --tv-focus-color: #ff9d2e;
+    --tv-focus-width: 3px;
+}
+
+.tv-mode :focus {
+    outline: var(--tv-focus-width) solid var(--tv-focus-color);
+    outline-offset: 3px;
+    border-radius: 4px;
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, .45), 0 0 22px rgba(255, 157, 46, .5);
+}
+
+/* The focused card lifts slightly — on a TV this reads faster than the ring
+   alone, especially in a dense grid. */
+.tv-mode [data-tv-focusable]:focus {
+    position: relative;
+    z-index: 6;
+    transform: scale(1.03);
+    transition: transform .12s ease;
+}
+
+/* Keep the target clear of the sticky ticker/masthead when it scrolls in. */
+.tv-mode :focus {
+    scroll-margin-block: 120px;
+    scroll-margin-inline: 24px;
+}
+
+/* Focus must never be invisible: some site rules kill outlines globally. */
+.tv-mode a:focus,
+.tv-mode button:focus,
+.tv-mode [tabindex]:focus {
+    outline-style: solid;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tv-mode [data-tv-focusable]:focus { transform: none; }
+}

@@ -6,6 +6,7 @@ import { AuthProvider, AuthRoute, ProtectedRoute, useAuth } from '../global/cont
 import { queryClient } from '../core/network/query-client';
 import Footer from '../features/footer/footer';
 import AdminLayout from '../features/admin/layouts/admin-layout';
+import { TvNavigationProvider } from '../features/tv/contexts/tv-navigation';
 
 import HomePage from '../pages/home';
 import WatchPage from '../pages/watch';
@@ -28,10 +29,12 @@ export default function App() {
         <BrowserRouter>
             <AuthProvider>
                 <QueryClientProvider client={queryClient}>
-                    <AppGate>
-                        <AppShell />
-                    </AppGate>
-                    <Toaster position="top-right" />
+                    <TvNavigationProvider>
+                        <AppGate>
+                            <AppShell />
+                        </AppGate>
+                        <Toaster position="top-right" />
+                    </TvNavigationProvider>
                 </QueryClientProvider>
             </AuthProvider>
         </BrowserRouter>
