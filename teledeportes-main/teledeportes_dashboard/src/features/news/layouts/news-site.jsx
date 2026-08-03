@@ -4,14 +4,14 @@ import { useSearchParams } from 'react-router-dom';
 import { usePublicNews } from '../queries/hooks';
 import { usePublicChannels } from '../../live/queries/hooks';
 import { NAV_SECTIONS, formatNewsDate, truncate } from '../utils/format';
-import { VIDEO_NEWS } from '../utils/videos';
+import { IconList } from '../../../common/icons';
 
 import SiteLayout from './site-layout';
 import HeroLive from '../components/hero-live';
 import VideoCarousel from '../components/video-carousel';
 import NewsCarousel from '../components/news-carousel';
 import CategoryPage from '../components/category-page';
-import { ArticleView, VideoArticleView } from '../components/article-view';
+import { ArticleView } from '../components/article-view';
 
 const navKeyForCategory = (category) => NAV_SECTIONS.find(s => s.category === category)?.key;
 
@@ -39,7 +39,6 @@ export default function NewsSite() {
 
     const go = (next) => { setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }); };
     const openArticle = (id) => go({ type: 'article', id });
-    const openVideo = (id) => go({ type: 'video', id });
     const openCategory = (category) => go({ type: 'category', category });
 
     const handleNavigate = (key) => {
@@ -59,7 +58,6 @@ export default function NewsSite() {
     }
 
     const deportes = articles.filter(a => a.category === 'DEPORTES');
-    const heroSide = (deportes.length ? deportes : articles).slice(0, 4);
     const homeNews = deportes.length ? deportes : articles;
 
     return (
@@ -71,31 +69,13 @@ export default function NewsSite() {
                 <>
                     {view.type === 'home' && (
                         <div className="homePage" style={{ padding: 0 }}>
-                            <div className="rj_hero_section">
-                                <div className="rj_hero_inner">
-                                    <HeroLive key={liveChannel?.slug || 'offline'} channel={liveChannel} />
-                                    <div className="rj_hero_side">
-                                        {heroSide.map(a => (
-                                            <div className="rj_side_item" key={a.id} onClick={() => openArticle(a.id)}>
-                                                <div className="rj_side_img">
-                                                    <img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
-                                                </div>
-                                                <div className="rj_side_body">
-                                                    <span className="rj_side_cat">{a.category}</span>
-                                                    <div className="rj_side_title">{a.title}</div>
-                                                    <div className="rj_side_date">{formatNewsDate(a.publishedAt)}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <VideoCarousel onOpenVideo={openVideo} />
+                            <HeroLive key={liveChannel?.slug || 'offline'} channel={liveChannel} />
 
                             <div className="rj_carousel_section">
                                 <NewsCarousel title="Titulares del deporte" articles={homeNews} onOpen={openArticle} />
                             </div>
+
+                            <VideoCarousel />
                         </div>
                     )}
 
@@ -104,14 +84,13 @@ export default function NewsSite() {
                             category={view.category}
                             articles={articles}
                             onOpen={openArticle}
-                            onOpenVideo={openVideo}
                         />
                     )}
 
                     {view.type === 'todas' && (
                         <div className="page_cat" style={{ display: 'block' }}>
                             <div className="cat_hero">
-                                <div className="cat_hero_icon">📋</div>
+                                <div className="cat_hero_icon"><IconList size={44} /></div>
                                 <div className="cat_hero_text">
                                     <h1><span className="cat-accent">T</span>ODAS LAS NOTICIAS</h1>
                                     <p className="parraf">El archivo completo de TELEDEPORTES.</p>
@@ -148,19 +127,6 @@ export default function NewsSite() {
                                 allArticles={articles}
                                 onOpen={openArticle}
                                 onBack={() => openCategory(article.category)}
-                                onCategory={openCategory}
-                            />
-                        );
-                    })()}
-
-                    {view.type === 'video' && (() => {
-                        const video = VIDEO_NEWS.find(v => v.id === view.id);
-                        if (!video) return <p style={{ padding: 60, textAlign: 'center' }}>Video no encontrado.</p>;
-                        return (
-                            <VideoArticleView
-                                video={video}
-                                onBack={() => openCategory(video.categoria)}
-                                onOpenVideo={openVideo}
                                 onCategory={openCategory}
                             />
                         );

@@ -1,11 +1,18 @@
-import VideoCarousel from './video-carousel';
+import { IconNewspaper, IconBall, IconFilm, IconLandmark } from '../../../common/icons';
 import { CATEGORY_META, formatNewsDate, truncate } from '../utils/format';
 
-// A category landing page: hero band, a featured article, a 2-up subgrid of the
-// rest, and the category's video carousel. Mirrors the prototype's renderHome
-// per-category grid.
-export default function CategoryPage({ category, articles, onOpen, onOpenVideo }) {
-    const meta = CATEGORY_META[category] || { icon: '📰', blurb: '' };
+const CATEGORY_ICONS = {
+    NOTICIAS: IconNewspaper,
+    DEPORTES: IconBall,
+    CULTURA: IconFilm,
+    POLÍTICA: IconLandmark,
+};
+
+// A category landing page: hero band, a featured article, and a 2-up subgrid of
+// the rest. Mirrors the prototype's per-category grid.
+export default function CategoryPage({ category, articles, onOpen }) {
+    const meta = CATEGORY_META[category] || { blurb: '' };
+    const Icon = CATEGORY_ICONS[category] || IconNewspaper;
     const items = articles.filter(a => a.category === category);
     const [featured, ...rest] = items;
 
@@ -18,7 +25,7 @@ export default function CategoryPage({ category, articles, onOpen, onOpenVideo }
     return (
         <div className="page_cat" style={{ display: 'block' }}>
             <div className="cat_hero">
-                <div className="cat_hero_icon">{meta.icon}</div>
+                <div className="cat_hero_icon"><Icon size={44} /></div>
                 <div className="cat_hero_text">
                     <h1><span className="cat-accent">{category.charAt(0)}</span>{heading.slice(1).toUpperCase()}</h1>
                     <p className="parraf">{meta.blurb}</p>
@@ -65,8 +72,6 @@ export default function CategoryPage({ category, articles, onOpen, onOpenVideo }
                     </div>
                 )}
             </div>
-
-            <VideoCarousel category={category} onOpenVideo={onOpenVideo} />
         </div>
     );
 }

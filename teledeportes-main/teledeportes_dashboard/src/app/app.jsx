@@ -57,7 +57,9 @@ function AppGate({ children }) {
 // site header/footer, so we drop the shell padding and the global Footer there.
 function AppShell() {
     const { pathname } = useLocation();
-    const isPublicSite = pathname === '/' || pathname === '/vivo' || pathname.startsWith('/vivo/');
+    const isPublicSite = pathname === '/'
+        || pathname === '/vivo' || pathname.startsWith('/vivo/')
+        || pathname.startsWith('/watch/');
 
     return (
         <div className="app-shell">
