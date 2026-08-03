@@ -1,3 +1,4 @@
+import { IconMapPin, IconBroadcast, IconMessageCircle, IconMail } from '../../../common/icons';
 import { NAV_SECTIONS } from '../utils/format';
 
 // Site footer, ported from the prototype. `onNavigate(key)` reuses the in-page
@@ -47,21 +48,21 @@ export default function SiteFooter({ onNavigate }) {
                 <div>
                     <div className="rj_footer_col_title">Contacto</div>
                     <div className="rj_footer_contact_item">
-                        <span className="rj_footer_contact_icon">📍</span>
+                        <span className="rj_footer_contact_icon"><IconMapPin /></span>
                         <span className="rj_footer_contact_text">CALI, Valle del Cauca, Colombia</span>
                     </div>
                     <div className="rj_footer_contact_item">
-                        <span className="rj_footer_contact_icon">📻</span>
+                        <span className="rj_footer_contact_icon"><IconBroadcast size={16} /></span>
                         <span className="rj_footer_contact_text">Transmisión en vivo · FM</span>
                     </div>
                     <div className="rj_footer_contact_item">
-                        <span className="rj_footer_contact_icon">💬</span>
+                        <span className="rj_footer_contact_icon"><IconMessageCircle /></span>
                         <span className="rj_footer_contact_text">
                             <a href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a>
                         </span>
                     </div>
                     <div className="rj_footer_contact_item">
-                        <span className="rj_footer_contact_icon">📧</span>
+                        <span className="rj_footer_contact_icon"><IconMail /></span>
                         <span className="rj_footer_contact_text">
                             <a href="mailto:info@teledeportes.net">info@teledeportes.net</a>
                         </span>

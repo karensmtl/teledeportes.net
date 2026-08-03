@@ -14,7 +14,7 @@ export default function ChannelCard({ channel }) {
                 <span className="live-card__play"><IconPlay size={20} /></span>
                 {channel.thumbnailUrl
                     ? <img className="live-card__img" src={channel.thumbnailUrl} alt={channel.name} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                    : <ChannelBrand channel={channel} size="md" className="live-card__brand channel-brand--on-light" />}
+                    : <ChannelBrand channel={channel} size="md" className="live-card__brand" />}
             </div>
             <div className="live-card__body">
                 <div className="live-card__cat">Canal en vivo</div>

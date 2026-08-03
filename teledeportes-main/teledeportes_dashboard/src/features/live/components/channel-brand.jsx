@@ -6,14 +6,29 @@ import './styles/channel-brand.css';
 // channel name in small type underneath. When a channel has no logo — or the
 // file 404s — it degrades to the name alone as a wordmark, so the hero never
 // renders an empty slot.
-export default function ChannelBrand({ channel, size = 'lg', className = '' }) {
+//
+// `nameAs` lets the caller keep the name as the page's <h1>: the hero replaces
+// a big headline with the logo, but the text still has to be there for search
+// engines and screen readers.
+export default function ChannelBrand({
+    channel,
+    size = 'lg',
+    align = 'center',
+    nameAs = 'span',
+    className = '',
+}) {
     const [broken, setBroken] = useState(false);
     if (!channel) return null;
 
+    // Local const, not a destructured param: the repo's no-unused-vars only
+    // exempts PascalCase *variables*, and there is no eslint-plugin-react here
+    // to see that JSX uses it.
+    const NameTag = nameAs;
     const hasLogo = Boolean(channel.logoUrl) && !broken;
+    const classes = `channel-brand channel-brand--${size} channel-brand--${align} ${className}`.trim();
 
     return (
-        <div className={`channel-brand channel-brand--${size} ${className}`.trim()}>
+        <div className={classes}>
             {hasLogo ? (
                 <>
                     <img
@@ -22,10 +37,10 @@ export default function ChannelBrand({ channel, size = 'lg', className = '' }) {
                         alt={channel.name}
                         onError={() => setBroken(true)}
                     />
-                    <span className="channel-brand__name">{channel.name}</span>
+                    <NameTag className="channel-brand__name">{channel.name}</NameTag>
                 </>
             ) : (
-                <span className="channel-brand__wordmark">{channel.name}</span>
+                <NameTag className="channel-brand__wordmark">{channel.name}</NameTag>
             )}
         </div>
     );

@@ -1,0 +1,10 @@
+# TeleDeportes — https://teledeportes.net
+# Se permite el rastreo del sitio público; se bloquea el panel y auth.
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /logout
+Disallow: /unauthorized
+
+Sitemap: https://teledeportes.net/sitemap.xml

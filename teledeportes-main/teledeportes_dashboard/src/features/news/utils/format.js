@@ -11,12 +11,12 @@ export const NAV_SECTIONS = [
     { key: 'todas', label: 'TODAS' },
 ];
 
-// Category page hero copy (icon + intro), ported from the prototype.
+// Category page hero intro copy. The icon is an SVG mapped in category-page.jsx.
 export const CATEGORY_META = {
-    NOTICIAS: { icon: '📰', blurb: 'Todo lo que está pasando en Colombia y el mundo.' },
-    DEPORTES: { icon: '⚽', blurb: 'Resultados, fichajes y todo el deporte nacional e internacional.' },
-    CULTURA:  { icon: '🎭', blurb: 'Arte, música, cine y todo lo que mueve la identidad de nuestra región.' },
-    POLÍTICA: { icon: '🏛️', blurb: 'Decisiones, debates y análisis del panorama político colombiano.' },
+    NOTICIAS: { blurb: 'Todo lo que está pasando en Colombia y el mundo.' },
+    DEPORTES: { blurb: 'Resultados, fichajes y todo el deporte nacional e internacional.' },
+    CULTURA:  { blurb: 'Arte, música, cine y todo lo que mueve la identidad de nuestra región.' },
+    POLÍTICA: { blurb: 'Decisiones, debates y análisis del panorama político colombiano.' },
 };
 
 // Breaking-news ticker headlines.

@@ -4,11 +4,12 @@
 .channel-brand {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 8px;
-    text-align: center;
     max-width: 78%;
 }
+
+.channel-brand--center { align-items: center; text-align: center; }
+.channel-brand--start { align-items: flex-start; text-align: left; max-width: 100%; }
 
 .channel-brand__logo {
     width: auto;
@@ -44,24 +45,6 @@
 
 .channel-brand--md .channel-brand__wordmark { font-size: 28px; }
 .channel-brand--sm .channel-brand__wordmark { font-size: 16px; }
-
-/* Over a light surface (card placeholders) the white-on-video treatment would
-   disappear — swap to brand colours and drop the shadows. */
-.channel-brand--on-light .channel-brand__logo { filter: none; }
-.channel-brand--on-light .channel-brand__name {
-    color: var(--c-muted, #718096);
-    text-shadow: none;
-}
-.channel-brand--on-light .channel-brand__wordmark {
-    color: var(--c-accent, #0057b8);
-    font-family: var(--f-display, Arial, sans-serif);
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    text-shadow: none;
-    padding: 0 12px;
-}
 
 @media (max-width: 720px) {
     .channel-brand--lg .channel-brand__logo { max-height: 84px; }

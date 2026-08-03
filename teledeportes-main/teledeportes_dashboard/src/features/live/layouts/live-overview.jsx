@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import SiteLayout from '../../news/layouts/site-layout';
+import { IconBroadcast } from '../../../common/icons';
 import { usePublicChannels } from '../queries/hooks';
 import ChannelCard from '../components/channel-card';
 
@@ -18,7 +19,7 @@ export default function LiveOverview() {
     return (
         <SiteLayout onNavigate={goSection}>
             <div className="cat_hero">
-                <div className="cat_hero_icon">📡</div>
+                <div className="cat_hero_icon"><IconBroadcast size={44} /></div>
                 <div className="cat_hero_text">
                     <h1><span className="cat-accent">E</span>N VIVO</h1>
                     <p className="parraf">Canales de TELEDEPORTES transmitiendo ahora.</p>
