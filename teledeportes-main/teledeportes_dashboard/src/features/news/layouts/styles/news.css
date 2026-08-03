@@ -299,7 +299,7 @@
 /* Channel identity: the logo replaces the eyebrow + big serif headline. The
    name survives as the <h1>, small, under the mark. Scales with the hero so a
    wide logo never crowds the CTA. */
-.rlive__brand .channel-brand__logo { max-height: clamp(56px, 8vw, 124px); }
+.rlive__brand .channel-brand__logo { max-height: clamp(36px, 4.4vw, 72px); max-width: min(320px, 60vw); }
 .rlive__brand .channel-brand__name {
   font-family: var(--f-display); font-weight: 600;
   font-size: clamp(12px,1.4vw,15px); letter-spacing: .16em; text-transform: uppercase;
