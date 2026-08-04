@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { IconMapPin, IconBroadcast, IconMessageCircle, IconMail } from '../../../common/icons';
 import { NAV_SECTIONS } from '../utils/format';
 
@@ -67,6 +69,14 @@ export default function SiteFooter({ onNavigate }) {
                             <a href="mailto:info@teledeportes.net">info@teledeportes.net</a>
                         </span>
                     </div>
+                </div>
+
+                <div>
+                    <div className="rj_footer_col_title">Legal</div>
+                    <ul className="rj_footer_links">
+                        <li><Link to="/terminos">Términos y condiciones</Link></li>
+                        <li><Link to="/privacidad">Política de privacidad</Link></li>
+                    </ul>
                 </div>
             </div>
 

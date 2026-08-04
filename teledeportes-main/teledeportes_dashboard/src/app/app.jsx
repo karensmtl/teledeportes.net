@@ -20,6 +20,8 @@ import StudioPage from '../pages/admin/studio';
 import NewsPage from '../pages/admin/news';
 import LivePage from '../pages/vivo';
 import LiveWatchPage from '../pages/vivo-watch';
+import PrivacidadPage from '../pages/privacidad';
+import TerminosPage from '../pages/terminos';
 
 // TSS vite/01 — app shell. Wires providers, router, layout chrome.
 // TSS vite/03 §"Provider composition order" — Router → Auth → QueryClient → cross-app providers.
@@ -62,7 +64,8 @@ function AppShell() {
     const { pathname } = useLocation();
     const isPublicSite = pathname === '/'
         || pathname === '/vivo' || pathname.startsWith('/vivo/')
-        || pathname.startsWith('/watch/');
+        || pathname.startsWith('/watch/')
+        || pathname === '/privacidad' || pathname === '/terminos';
 
     return (
         <div className="app-shell">
@@ -82,6 +85,9 @@ function AppRoutes() {
             <Route path="/watch/:slug" element={<WatchPage />} />
             <Route path="/vivo" element={<LivePage />} />
             <Route path="/vivo/:slug" element={<LiveWatchPage />} />
+            {/* Rutas declaradas en la ficha de Google Play: no renombrar. */}
+            <Route path="/privacidad" element={<PrivacidadPage />} />
+            <Route path="/terminos" element={<TerminosPage />} />
 
             {/* Pre-auth surfaces — TSS vite/01 §"Pages by audience". */}
             <Route path="/login" element={<LoginPage />} />

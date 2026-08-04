@@ -545,7 +545,7 @@
    FOOTER
    ════════════════════════════════════════════════════ */
 .rj_footer { background: var(--c-bg-2); border-top: 3px solid var(--c-accent); padding: 48px 0 24px; }
-.rj_footer_inner { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; }
+.rj_footer_inner { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 1fr; gap: 40px; }
 .rj_footer_logo { height: 52px; max-width: 180px; object-fit: contain; margin-bottom: 14px; opacity: 1; display: block; }
 .rj_footer_desc { font-family: var(--f-serif); font-size: .85em; color: var(--c-muted); line-height: 1.7; margin-bottom: 20px; }
 .rj_footer_social { display: flex; gap: 10px; align-items: center; }
