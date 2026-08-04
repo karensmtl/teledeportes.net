@@ -39,7 +39,7 @@ export default function SiteHeader({ activeKey, onNavigate }) {
                     <Link to="/admin" className="site-icon-btn" aria-label="Cuenta" title="Cuenta">
                         <IconUser size={20} />
                     </Link>
-                    <a href="https://web.whatsapp.com/" className="bnt_contac" target="_blank" rel="noopener noreferrer">CONTÁCTANOS</a>
+                    <Link to="/contacto" className="bnt_contac">CONTÁCTANOS</Link>
                 </div>
             </div>
         </header>

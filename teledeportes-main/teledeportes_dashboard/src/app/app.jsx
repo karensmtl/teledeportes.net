@@ -20,6 +20,7 @@ import StudioPage from '../pages/admin/studio';
 import NewsPage from '../pages/admin/news';
 import LivePage from '../pages/vivo';
 import LiveWatchPage from '../pages/vivo-watch';
+import ContactoPage from '../pages/contacto';
 import PrivacidadPage from '../pages/privacidad';
 import TerminosPage from '../pages/terminos';
 
@@ -65,7 +66,8 @@ function AppShell() {
     const isPublicSite = pathname === '/'
         || pathname === '/vivo' || pathname.startsWith('/vivo/')
         || pathname.startsWith('/watch/')
-        || pathname === '/privacidad' || pathname === '/terminos';
+        || pathname === '/privacidad' || pathname === '/terminos'
+        || pathname === '/contacto';
 
     return (
         <div className="app-shell">
@@ -85,6 +87,7 @@ function AppRoutes() {
             <Route path="/watch/:slug" element={<WatchPage />} />
             <Route path="/vivo" element={<LivePage />} />
             <Route path="/vivo/:slug" element={<LiveWatchPage />} />
+            <Route path="/contacto" element={<ContactoPage />} />
             {/* Rutas declaradas en la ficha de Google Play: no renombrar. */}
             <Route path="/privacidad" element={<PrivacidadPage />} />
             <Route path="/terminos" element={<TerminosPage />} />

@@ -22,6 +22,18 @@ export const ORGANIZATION = {
     email: 'contacto@teledeportes.net',
     privacyEmail: 'privacidad@teledeportes.net',
 
+    // WhatsApp en formato internacional sin signos: 57 + número. Déjalo en
+    // null mientras no haya uno real — la interfaz oculta el canal en vez de
+    // pintar un enlace roto. Hasta ahora el botón CONTÁCTANOS apuntaba a
+    // web.whatsapp.com sin número, que no contacta con nadie.
+    whatsapp: null,
+
+    social: {
+        facebook: 'https://www.facebook.com',
+        instagram: 'https://www.instagram.com',
+        youtube: 'https://www.youtube.com',
+    },
+
     // Nombre de la app publicada en Google Play. La política debe cubrir
     // explícitamente lo que recoge la app, no solo el sitio web.
     appName: 'TeleDeportes',
@@ -31,3 +43,10 @@ export const ORGANIZATION = {
 // edite el contenido: es lo que ve el usuario para saber qué versión aceptó, y
 // lo que revisa Google Play al comparar la ficha con la política publicada.
 export const LEGAL_UPDATED_AT = '2026-08-03';
+
+// Enlace a WhatsApp, o null si no hay número configurado.
+export function whatsappUrl(text) {
+    if (!ORGANIZATION.whatsapp) return null;
+    const query = text ? `?text=${encodeURIComponent(text)}` : '';
+    return `https://wa.me/${ORGANIZATION.whatsapp}${query}`;
+}
