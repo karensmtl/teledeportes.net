@@ -32,8 +32,8 @@ export default function NewsSite() {
     const { data: chData } = usePublicChannels();
     const articles = data?.items || [];
 
-    // Top on-air channel feeds the hero's live video.
-    const liveChannel = (chData?.items || []).find(c => c.isOnAir) || null;
+    // Todos los canales al aire alimentan el carrusel del hero.
+    const liveChannels = (chData?.items || []).filter(c => c.isOnAir);
 
     const [view, setView] = useState(() => viewFromParam(searchParams.get('s')));
 
@@ -69,7 +69,7 @@ export default function NewsSite() {
                 <>
                     {view.type === 'home' && (
                         <div className="homePage" style={{ padding: 0 }}>
-                            <HeroLive key={liveChannel?.slug || 'offline'} channel={liveChannel} />
+                            <HeroLive channels={liveChannels} />
 
                             <div className="rj_carousel_section">
                                 <NewsCarousel title="Titulares del deporte" articles={homeNews} onOpen={openArticle} />

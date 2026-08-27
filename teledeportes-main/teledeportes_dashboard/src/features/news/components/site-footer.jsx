@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { IconMapPin, IconBroadcast, IconMessageCircle, IconMail } from '../../../common/icons';
 import { NAV_SECTIONS } from '../utils/format';
 
-// Site footer, ported from the prototype. `onNavigate(key)` reuses the in-page
-// section switcher for the "Secciones" links.
-export default function SiteFooter({ onNavigate }) {
+// Pie del sitio. Las secciones son rutas propias desde que el menú se redujo a
+// EN VIVO y ENTRETENIMIENTO, así que ya no necesita el conmutador en página.
+export default function SiteFooter() {
     const year = new Date().getFullYear();
     return (
         <footer className="rj_footer">
@@ -41,8 +41,11 @@ export default function SiteFooter({ onNavigate }) {
                 <div>
                     <div className="rj_footer_col_title">Secciones</div>
                     <ul className="rj_footer_links">
-                        {NAV_SECTIONS.map(({ key, label }) => (
-                            <li key={key}><a onClick={() => onNavigate(key)}>{label === 'TODAS' ? 'Todas las noticias' : label.charAt(0) + label.slice(1).toLowerCase()}</a></li>
+                        {/* Los grupos se aplanan: en el pie no hay submenús. */}
+                        {NAV_SECTIONS.flatMap(s => s.children || [s]).map(({ key, label, to }) => (
+                            <li key={key}>
+                                <Link to={to}>{label.charAt(0) + label.slice(1).toLowerCase()}</Link>
+                            </li>
                         ))}
                     </ul>
                 </div>

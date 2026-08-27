@@ -21,6 +21,7 @@ import NewsPage from '../pages/admin/news';
 import LivePage from '../pages/vivo';
 import LiveWatchPage from '../pages/vivo-watch';
 import ContactoPage from '../pages/contacto';
+import RapichonticoPage from '../pages/rapichontico';
 import PrivacidadPage from '../pages/privacidad';
 import TerminosPage from '../pages/terminos';
 
@@ -67,7 +68,7 @@ function AppShell() {
         || pathname === '/vivo' || pathname.startsWith('/vivo/')
         || pathname.startsWith('/watch/')
         || pathname === '/privacidad' || pathname === '/terminos'
-        || pathname === '/contacto';
+        || pathname === '/contacto' || pathname === '/rapichontico';
 
     return (
         <div className="app-shell">
@@ -88,6 +89,7 @@ function AppRoutes() {
             <Route path="/vivo" element={<LivePage />} />
             <Route path="/vivo/:slug" element={<LiveWatchPage />} />
             <Route path="/contacto" element={<ContactoPage />} />
+            <Route path="/rapichontico" element={<RapichonticoPage />} />
             {/* Rutas declaradas en la ficha de Google Play: no renombrar. */}
             <Route path="/privacidad" element={<PrivacidadPage />} />
             <Route path="/terminos" element={<TerminosPage />} />
