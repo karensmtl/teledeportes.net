@@ -36,7 +36,26 @@ Hay dos formas de emitir a un canal:
 
 En la fila del canal → **Miniatura** → elige una imagen (JPG/PNG/WEBP, ≤ 8 MB).
 Se muestra en la página pública `/vivo` y en la lista del admin. Si no subes una,
-se muestra el nombre del canal.
+se muestra el logo del canal (ver abajo).
+
+## Logo del canal
+
+En la fila del canal → **Subir logo** → elige una imagen **PNG, WEBP o AVIF con
+transparencia** (≤ 2 MB). JPG se rechaza a propósito: se vería como un recuadro
+opaco encima del video.
+
+El logo es la identidad visual del canal: reemplaza al nombre en el **hero de la
+portada** (el nombre queda debajo, en letra pequeña) y en las tarjetas de `/vivo`
+cuando el canal no tiene miniatura. Si el canal no tiene logo, se usa el nombre
+como marca denominativa, así que la portada nunca queda vacía.
+
+- La columna **Logo** de la lista muestra el logo sobre un damero para que veas
+  si de verdad tiene transparencia.
+- **Cambiar logo** reemplaza el anterior (y borra el archivo viejo del disco).
+- **Quitar logo** vuelve a mostrar el nombre.
+
+> Recomendación: logo horizontal, alto ≥ 128 px, con márgenes mínimos. En el hero
+> se escala a 128 px de alto como máximo.
 
 ## Ver el canal
 

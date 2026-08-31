@@ -139,6 +139,54 @@
 .site-hd__nav a:hover, .site-hd__nav a.active { color: var(--c-text); border-bottom-color: var(--c-accent); }
 .site-hd__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
+/* ── submenú del menú superior ──────────────────────
+   Se abre por :hover y :focus-within, sin estado en JS. Mientras está cerrado
+   va con visibility:hidden, que además lo saca del alcance del D-pad: el
+   resolutor espacial descarta lo invisible, así que no se puede enfocar un
+   enlace que no se ve. */
+.site-hd__group { position: relative; display: flex; align-items: center; }
+.site-hd__group-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 13px; background: none; border: none;
+  font-family: var(--f-display); font-size: 13px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted);
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: color .18s, border-color .18s;
+}
+.site-hd__group:hover .site-hd__group-btn,
+.site-hd__group:focus-within .site-hd__group-btn,
+.site-hd__group-btn.active { color: var(--c-text); border-bottom-color: var(--c-accent); }
+.site-hd__group-btn svg { transition: transform .18s; }
+.site-hd__group:hover .site-hd__group-btn svg,
+.site-hd__group:focus-within .site-hd__group-btn svg { transform: rotate(180deg); }
+
+.site-hd__menu {
+  position: absolute; top: 100%; left: 0; z-index: 210;
+  min-width: 190px; padding: 6px;
+  display: flex; flex-direction: column;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 18px 40px -14px rgba(0,0,0,.7);
+  visibility: hidden; opacity: 0; transform: translateY(-6px);
+  transition: opacity .16s, transform .16s, visibility .16s;
+}
+.site-hd__group:hover .site-hd__menu,
+.site-hd__group:focus-within .site-hd__menu { visibility: visible; opacity: 1; transform: translateY(0); }
+
+.site-hd__menu-item {
+  padding: 10px 12px; border-radius: var(--radius);
+  font-family: var(--f-display); font-size: 13.5px; font-weight: 600;
+  color: var(--c-body); white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.site-hd__menu-item:hover, .site-hd__menu-item:focus-visible { background: var(--c-surface2); color: var(--c-text); }
+
+@media (max-width: 1080px) {
+  /* El nav pasa a barra desplazable: el submenú se ancla al borde y no se
+     sale de la pantalla. */
+  .site-hd__menu { left: auto; right: 0; }
+}
+
 @media (max-width: 1080px) {
   .site-hd__inner { flex-wrap: wrap; gap: 12px; }
   .site-hd__actions { margin-left: auto; }
@@ -296,6 +344,21 @@
   letter-spacing: -.01em; text-shadow: 0 2px 22px rgba(0,0,0,.55);
   text-wrap: balance;
 }
+/* Channel identity: the logo replaces the eyebrow + big serif headline. The
+   name survives as the <h1>, small, under the mark. Scales with the hero so a
+   wide logo never crowds the CTA. */
+.rlive__brand .channel-brand__logo { max-height: clamp(36px, 4.4vw, 72px); max-width: min(320px, 60vw); }
+.rlive__brand .channel-brand__name {
+  font-family: var(--f-display); font-weight: 600;
+  font-size: clamp(12px,1.4vw,15px); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--c-accent2); text-shadow: none;
+}
+/* No logo yet: fall back to the redesign's own headline treatment. */
+.rlive__brand .channel-brand__wordmark {
+  font-family: var(--f-serif); font-weight: 700;
+  font-size: clamp(30px,5.2vw,60px); line-height: 1.04; color: #fff;
+  letter-spacing: -.01em; text-shadow: 0 2px 22px rgba(0,0,0,.55);
+}
 .rlive__sub {
   font-family: var(--f-serif); font-size: clamp(14px,1.7vw,19px);
   color: #d0dcea; line-height: 1.5; margin-top: 14px; max-width: 560px;
@@ -311,6 +374,44 @@
   text-decoration: none;
 }
 .rlive__cta:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 6px 0 var(--c-live), 0 18px 32px rgba(0,0,0,.45); }
+
+/* ── carrusel de canales al aire ────────────────────── */
+.rlive__count {
+  font-family: var(--f-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: #d8e3f0;
+  background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.18);
+  padding: 5px 11px; border-radius: 6px; backdrop-filter: blur(3px);
+}
+.rlive__top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.rlive__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.22);
+  color: #fff; cursor: pointer;
+  transition: background .16s, transform .16s, border-color .16s;
+}
+.rlive__arrow:hover { background: rgba(0,0,0,.78); border-color: var(--c-accent); }
+.rlive__arrow--prev { left: clamp(10px, 2vw, 22px); }
+.rlive__arrow--next { right: clamp(10px, 2vw, 22px); }
+.rlive__arrow:hover.rlive__arrow--prev { transform: translateY(-50%) scale(1.06); }
+.rlive__arrow:hover.rlive__arrow--next { transform: translateY(-50%) scale(1.06); }
+
+.rlive__dots { display: flex; gap: 9px; align-items: center; margin-top: 20px; }
+.rlive__dot {
+  width: 30px; height: 5px; border-radius: 3px; padding: 0;
+  border: none; cursor: pointer; background: rgba(255,255,255,.32);
+  transition: background .16s, width .16s;
+}
+.rlive__dot:hover { background: rgba(255,255,255,.6); }
+.rlive__dot--on { background: var(--c-accent); width: 46px; }
+
+@media (max-width: 700px) {
+  /* En pantalla estrecha las flechas tapan el contenido: manda el gesto. */
+  .rlive__arrow { display: none; }
+  .rlive__dots { margin-top: 14px; }
+}
 
 /* playing state — the player fills the hero */
 .rlive--playing { padding: clamp(18px,3vw,30px) 0 6px; }
@@ -530,7 +631,7 @@
    FOOTER
    ════════════════════════════════════════════════════ */
 .rj_footer { background: var(--c-bg-2); border-top: 3px solid var(--c-accent); padding: 48px 0 24px; }
-.rj_footer_inner { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; }
+.rj_footer_inner { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 1fr; gap: 40px; }
 .rj_footer_logo { height: 52px; max-width: 180px; object-fit: contain; margin-bottom: 14px; opacity: 1; display: block; }
 .rj_footer_desc { font-family: var(--f-serif); font-size: .85em; color: var(--c-muted); line-height: 1.7; margin-bottom: 20px; }
 .rj_footer_social { display: flex; gap: 10px; align-items: center; }

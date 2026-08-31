@@ -46,7 +46,7 @@ export function ArticleView({ article, allArticles, onOpen, onBack, onCategory }
                     <h2 className="art-rel-heading"><span className="art-rel-line" />Artículos relacionados<span className="art-rel-line" /></h2>
                     <div className="art-rel-grid">
                         {related.length ? related.map(r => (
-                            <div className="art-rel-card" key={r.id} onClick={() => onOpen(r.id)}>
+                            <div className="art-rel-card" key={r.id} onClick={() => onOpen(r.id)} role="button" tabIndex={0} data-tv-focusable>
                                 <div className="art-rel-img">
                                     <img src={r.imageUrl} onError={(e) => { e.currentTarget.src = '/logo.png'; }} alt={r.title} />
                                     <span className="art-rel-cat">{r.category}</span>

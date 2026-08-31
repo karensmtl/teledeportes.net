@@ -8,7 +8,7 @@ const logger = require('../../core/logger');
 const channelSchemas = require('../../data/schemas/channel');
 const { slugify, ensureUniqueSlug } = require('../../core/utils/slug');
 const { streamNameFromUrl, rewriteStreamName } = require('../../core/media/ome');
-const { saveThumbnail, removeFileQuiet } = require('../../core/media/thumbnails');
+const { saveThumbnail, saveLogo, removeFileQuiet } = require('../../core/media/thumbnails');
 
 function validate(name, data) {
     const schema = channelSchemas[name];
@@ -84,6 +84,31 @@ class ChannelManager {
         if (!target) throw boom.notFound('Canal no encontrado');
         await removeFileQuiet(target.thumbnail_path);
         await target.update({ thumbnail_path: null });
+        return target.id;
+    }
+
+    // Brand mark shown in place of the channel name (transparent PNG/WEBP/AVIF).
+    async setLogo(id, file) {
+        if (!file) {
+            const err = boom.badRequest('Datos inválidos');
+            err.output.payload.fields = { logo: 'El logo es requerido' };
+            throw err;
+        }
+        const target = await models.Channel.findByPk(id);
+        if (!target) throw boom.notFound('Canal no encontrado');
+
+        const rel = await saveLogo(file, 'channel', id);
+        const previous = target.logo_path;
+        await target.update({ logo_path: rel });
+        if (previous && previous !== rel) await removeFileQuiet(previous);
+        return target.id;
+    }
+
+    async removeLogo(id) {
+        const target = await models.Channel.findByPk(id);
+        if (!target) throw boom.notFound('Canal no encontrado');
+        await removeFileQuiet(target.logo_path);
+        await target.update({ logo_path: null });
         return target.id;
     }
 

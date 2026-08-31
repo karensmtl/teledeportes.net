@@ -9,6 +9,7 @@ class ChannelPackage {
             externalHlsUrl: null,
             sortOrder: null,
             thumbnailUrl: null,
+            logoUrl: null,
             webrtcUrl: null,
             whepUrl: null,
             llhlsUrl: null,
@@ -37,6 +38,11 @@ class ChannelPackage {
 
     addThumbnail(url) {
         this.packaged.thumbnailUrl = url || null;
+    }
+
+    // Brand mark (transparent). Clients render it instead of the channel name.
+    addLogo(url) {
+        this.packaged.logoUrl = url || null;
     }
 
     // Public playback URLs (WebRTC primary, LL-HLS fallback).

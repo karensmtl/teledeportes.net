@@ -8,7 +8,7 @@ const ChannelPackage = require('../../data/packages/channel');
 
 const MEDIA_PUBLIC_URL = () => process.env.MEDIA_PUBLIC_URL || '';
 
-function thumbUrl(relativePath) {
+function mediaUrl(relativePath) {
     if (!relativePath) return null;
     return `${MEDIA_PUBLIC_URL().replace(/\/+$/, '')}/${String(relativePath).replace(/^\/+/, '')}`;
 }
@@ -55,7 +55,8 @@ class ChannelAssembler {
     #build(channel, admin) {
         const pkg = new ChannelPackage();
         pkg.addChannel(channel);
-        pkg.addThumbnail(thumbUrl(channel.thumbnail_path));
+        pkg.addThumbnail(mediaUrl(channel.thumbnail_path));
+        pkg.addLogo(mediaUrl(channel.logo_path));
         pkg.addPlayback(playbackUrls(channel.slug));
         if (admin) pkg.addAdmin(channel, ingestUrls(channel.stream_key));
         return pkg.build();

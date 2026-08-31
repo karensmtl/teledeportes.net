@@ -32,8 +32,8 @@ export default function NewsSite() {
     const { data: chData } = usePublicChannels();
     const articles = data?.items || [];
 
-    // Top on-air channel feeds the hero's live video.
-    const liveChannel = (chData?.items || []).find(c => c.isOnAir) || null;
+    // Todos los canales al aire alimentan el carrusel del hero.
+    const liveChannels = (chData?.items || []).filter(c => c.isOnAir);
 
     const [view, setView] = useState(() => viewFromParam(searchParams.get('s')));
 
@@ -69,7 +69,7 @@ export default function NewsSite() {
                 <>
                     {view.type === 'home' && (
                         <div className="homePage" style={{ padding: 0 }}>
-                            <HeroLive key={liveChannel?.slug || 'offline'} channel={liveChannel} />
+                            <HeroLive channels={liveChannels} />
 
                             <div className="rj_carousel_section">
                                 <NewsCarousel title="Titulares del deporte" articles={homeNews} onOpen={openArticle} />
@@ -104,7 +104,7 @@ export default function NewsSite() {
                                 <div style={{ padding: '24px 0' }}>
                                     <div className="allNewsGridPage">
                                         {articles.map(a => (
-                                            <div className="news_card" key={a.id} onClick={() => openArticle(a.id)} style={{ cursor: 'pointer' }}>
+                                            <div className="news_card" key={a.id} onClick={() => openArticle(a.id)} role="button" tabIndex={0} data-tv-focusable style={{ cursor: 'pointer' }}>
                                                 <div><img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} /></div>
                                                 <div className="new_card_cat">{a.category}</div>
                                                 <div className="new_card_title"><span>{a.title}</span></div>

@@ -5,7 +5,7 @@ const express = require('express');
 const ChannelManager = require('../../services/managers/channel_manager');
 const ChannelAssembler = require('../../services/assemblers/channel');
 const { ADMISSION_SECRET } = require('../../core/media/ome');
-const { uploadImageSingle } = require('../../core/media/image_upload');
+const { uploadImageSingle, uploadLogoSingle } = require('../../core/media/image_upload');
 const logger = require('../../core/logger');
 
 const authenticate = require('../../middlewares/auth/authenticate');
@@ -97,6 +97,20 @@ function channelRoutes(parent) {
     admin.delete('/:id/thumbnail', authorize('channels:write'), csrf, writeLimiter, async (req, res, next) => {
         try {
             const id = await manager.removeThumbnail(Number(req.params.id));
+            res.json(await assembler.assembleById(id, { admin: true }));
+        } catch (err) { next(err); }
+    });
+
+    admin.post('/:id/logo', authorize('channels:write'), csrf, writeLimiter, uploadLogoSingle('logo'), async (req, res, next) => {
+        try {
+            const id = await manager.setLogo(Number(req.params.id), req.file);
+            res.json(await assembler.assembleById(id, { admin: true }));
+        } catch (err) { next(err); }
+    });
+
+    admin.delete('/:id/logo', authorize('channels:write'), csrf, writeLimiter, async (req, res, next) => {
+        try {
+            const id = await manager.removeLogo(Number(req.params.id));
             res.json(await assembler.assembleById(id, { admin: true }));
         } catch (err) { next(err); }
     });

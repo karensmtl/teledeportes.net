@@ -48,3 +48,5 @@ Thumbs.db
 *.swp
 *~
 .prod
+# Proyecto derivado (PetronioTV). Vive aparte, no se versiona con TeleDeportes.
+petroniotv_dashboard/

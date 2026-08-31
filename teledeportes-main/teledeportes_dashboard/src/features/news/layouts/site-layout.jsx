@@ -14,7 +14,7 @@ export default function SiteLayout({ activeKey = null, onNavigate, children }) {
             <NewsTicker />
             <SiteHeader activeKey={activeKey} onNavigate={onNavigate} />
             {children}
-            <SiteFooter onNavigate={onNavigate} />
+            <SiteFooter />
         </div>
     );
 }

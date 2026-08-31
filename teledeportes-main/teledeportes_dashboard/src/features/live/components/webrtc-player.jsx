@@ -1,5 +1,15 @@
 import { useEffect, useId, useRef } from 'react';
 import OvenPlayer from 'ovenplayer';
+import Hls from 'hls.js';
+
+// OvenPlayer's bundle references `Hls` as a bare global — it never declares or
+// imports it (9 uses, 0 declarations in ovenplayer/dist/ovenplayer.js). Vite
+// keeps our `import Hls from 'hls.js'` module-scoped, so the LL-HLS provider
+// finds nothing and dies with error 106, "Error initializing HLS" (the Polish
+// locale spells the real cause out: "nie znaleziono hlsjs" — hlsjs not found).
+// Publishing it on window is the supported way to feed hls.js to OvenPlayer
+// from a bundler.
+if (typeof window !== 'undefined' && !window.Hls) window.Hls = Hls;
 
 // OvenPlayer wrapper for OME WebRTC (sub-second) with an LL-HLS fallback.
 // Muted autostart so the browser never blocks it; the viewer unmutes.

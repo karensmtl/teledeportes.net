@@ -1,14 +1,26 @@
 // News taxonomy — matches the backend `NEWS_CATEGORIES` enum.
 export const NEWS_CATEGORIES = ['NOTICIAS', 'DEPORTES', 'CULTURA', 'POLÍTICA'];
 
-// Nav sections (the site nav also has INICIO + TODAS which aren't categories).
+// Menú superior. Solo dos entradas por decisión de producto:
+//
+//   - una con `to` navega a una ruta propia
+//   - una con `children` abre un submenú (cada hijo lleva su propio `to`)
+//
+// Las categorías de noticias (NOTICIAS, DEPORTES, CULTURA, POLÍTICA) ya no se
+// exponen aquí; siguen existiendo en el backend y las notas se alcanzan desde
+// las tarjetas de la portada y desde el archivo.
 export const NAV_SECTIONS = [
-    { key: 'home', label: 'INICIO' },
-    { key: 'noticias', label: 'NOTICIAS', category: 'NOTICIAS' },
-    { key: 'deportes', label: 'DEPORTES', category: 'DEPORTES' },
-    { key: 'cultura', label: 'CULTURA', category: 'CULTURA' },
-    { key: 'politica', label: 'POLÍTICA', category: 'POLÍTICA' },
-    { key: 'todas', label: 'TODAS' },
+    { key: 'envivo', label: 'EN VIVO', to: '/vivo' },
+    {
+        key: 'entretenimiento',
+        label: 'ENTRETENIMIENTO',
+        children: [
+            // Canal del backend: su slug es el de la ruta pública.
+            { key: 'kash', label: 'Kash', to: '/vivo/kash' },
+            // Página propia, todavía por construir.
+            { key: 'rapichontico', label: 'Rapichontico', to: '/rapichontico' },
+        ],
+    },
 ];
 
 // Category page hero intro copy. The icon is an SVG mapped in category-page.jsx.

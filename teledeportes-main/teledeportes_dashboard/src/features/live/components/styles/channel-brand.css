@@ -1,0 +1,53 @@
+/* Channel identity — logo first, name small underneath. Sits over video, so
+   everything carries a shadow to stay legible on bright frames. */
+
+.channel-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 78%;
+}
+
+.channel-brand--center { align-items: center; text-align: center; }
+.channel-brand--start { align-items: flex-start; text-align: left; max-width: 100%; }
+
+.channel-brand__logo {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, .6));
+}
+
+.channel-brand--lg .channel-brand__logo { max-height: 128px; }
+.channel-brand--md .channel-brand__logo { max-height: 72px; }
+.channel-brand--sm .channel-brand__logo { max-height: 40px; }
+
+.channel-brand__name {
+    color: rgba(255, 255, 255, .88);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .8);
+}
+
+.channel-brand--sm .channel-brand__name { font-size: 11px; letter-spacing: .1em; }
+
+/* No logo uploaded: the name becomes the mark. */
+.channel-brand__wordmark {
+    color: #fff;
+    font-family: var(--f-serif, Georgia, serif);
+    font-size: 44px;
+    line-height: 1.1;
+    font-weight: 700;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .75);
+}
+
+.channel-brand--md .channel-brand__wordmark { font-size: 28px; }
+.channel-brand--sm .channel-brand__wordmark { font-size: 16px; }
+
+@media (max-width: 720px) {
+    .channel-brand--lg .channel-brand__logo { max-height: 84px; }
+    .channel-brand__wordmark { font-size: 30px; }
+    .channel-brand__name { font-size: 11px; }
+}

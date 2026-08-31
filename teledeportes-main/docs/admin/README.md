@@ -30,7 +30,7 @@ El menú lateral izquierdo tiene estas secciones:
 | Sección | Para qué sirve |
 |---|---|
 | **Dashboard** | Resumen: total de videos, listos, procesando y número de categorías + videos recientes. |
-| **Canales** | Crear y administrar canales en vivo (clave de transmisión, estado al aire, miniatura). |
+| **Canales** | Crear y administrar canales en vivo (clave de transmisión, estado al aire, miniatura, logo). |
 | **Estudio** | Salir al aire desde el navegador (cámara, pantalla o cámara virtual de vMix). |
 | **Categorías** | Crear y administrar las categorías con las que se organizan los videos. |
 | **Videos** | Subir videos, ver su estado de procesamiento y administrarlos. |

@@ -1,0 +1,67 @@
+/* Marcador de posición de Rapichontico: honesto y corto, mientras llega la
+   página real. */
+
+.rapi {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 90px 24px 110px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.rapi__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-accent);
+}
+
+.rapi__title {
+    font-family: var(--f-serif);
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 700;
+    color: var(--c-text);
+}
+
+.rapi__text {
+    font-family: var(--f-serif);
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: var(--c-body);
+}
+
+.rapi__actions { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; justify-content: center; margin-top: 10px; }
+
+.rapi__cta {
+    background: var(--c-accent);
+    color: #06131f;
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    font-family: var(--f-display);
+    font-size: .82em;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    transition: background var(--transition);
+}
+
+.rapi__cta:hover { background: var(--c-accent-d); color: #fff; }
+
+.rapi__link {
+    font-family: var(--f-display);
+    font-size: .82em;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.rapi__link:hover { color: var(--c-text); }

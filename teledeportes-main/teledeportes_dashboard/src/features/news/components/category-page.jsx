@@ -44,7 +44,7 @@ export default function CategoryPage({ category, articles, onOpen }) {
 
                 {items.length > 0 && (
                     <div className="cat_grid">
-                        <div className="cat_card featured" onClick={() => onOpen(featured.id)} style={{ cursor: 'pointer' }}>
+                        <div className="cat_card featured" onClick={() => onOpen(featured.id)} role="button" tabIndex={0} data-tv-focusable style={{ cursor: 'pointer' }}>
                             <div className="cat_card_img"><img src={featured.imageUrl} alt={featured.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} /></div>
                             <div className="cat_card_body">
                                 <div className="cat_card_cat">DESTACADO</div>
@@ -57,7 +57,7 @@ export default function CategoryPage({ category, articles, onOpen }) {
                         {pairs.map((pair, i) => (
                             <div className="cat_subgrid" key={i}>
                                 {pair.map(a => (
-                                    <div className="cat_card" key={a.id} onClick={() => onOpen(a.id)} style={{ cursor: 'pointer' }}>
+                                    <div className="cat_card" key={a.id} onClick={() => onOpen(a.id)} role="button" tabIndex={0} data-tv-focusable style={{ cursor: 'pointer' }}>
                                         <div className="cat_card_img"><img src={a.imageUrl} alt={a.title} onError={(e) => { e.currentTarget.src = '/logo.png'; }} /></div>
                                         <div className="cat_card_body">
                                             <div className="cat_card_cat">{a.category}</div>

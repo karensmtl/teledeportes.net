@@ -3,7 +3,11 @@ import toast from 'react-hot-toast';
 
 import { Gate } from '../../../global/contexts/auth/auth';
 import { IconPlus, IconEdit, IconTrash, IconEye, IconEyeOff } from '../../../common/icons';
-import { useChannels, useDeleteChannel, useSetChannelOnAir, useSetChannelThumbnail } from '../queries/hooks';
+import {
+    useChannels, useDeleteChannel, useSetChannelOnAir,
+    useSetChannelThumbnail, useSetChannelLogo, useRemoveChannelLogo,
+} from '../queries/hooks';
+import { LOGO_ACCEPT, LOGO_HINT } from '../../../core/constants/branding';
 import ChannelForm from '../forms/channel-form';
 import ThumbnailUpload from '../../../common/components/ThumbnailUpload/ThumbnailUpload';
 
@@ -21,6 +25,8 @@ export default function ChannelsOverview() {
     const remove = useDeleteChannel();
     const setOnAir = useSetChannelOnAir();
     const setThumb = useSetChannelThumbnail();
+    const setLogo = useSetChannelLogo();
+    const dropLogo = useRemoveChannelLogo();
     const [editing, setEditing] = useState(null);   // channel | 'new' | null
     const [revealed, setRevealed] = useState({});    // { [id]: bool }
 
@@ -40,6 +46,17 @@ export default function ChannelsOverview() {
     const onThumb = async (channel, file) => {
         try { await setThumb.mutateAsync({ id: channel.id, file }); toast.success('Miniatura actualizada'); }
         catch (err) { toast.error(err?.message || 'No se pudo subir la miniatura'); }
+    };
+
+    const onLogo = async (channel, file) => {
+        try { await setLogo.mutateAsync({ id: channel.id, file }); toast.success('Logo actualizado'); }
+        catch (err) { toast.error(err?.fields?.logo || err?.message || 'No se pudo subir el logo'); }
+    };
+
+    const onRemoveLogo = async (channel) => {
+        if (!window.confirm(`¿Quitar el logo de "${channel.name}"?`)) return;
+        try { await dropLogo.mutateAsync(channel.id); toast.success('Logo eliminado'); }
+        catch (err) { toast.error(err?.message || 'No se pudo quitar el logo'); }
     };
 
     return (
@@ -68,6 +85,7 @@ export default function ChannelsOverview() {
                             <tr>
                                 <th>Estado</th>
                                 <th>Canal</th>
+                                <th>Logo</th>
                                 <th>Ingest (encoder)</th>
                                 <th aria-label="acciones" />
                             </tr>
@@ -91,6 +109,11 @@ export default function ChannelsOverview() {
                                                 <div className="channel-slug">/{ch.slug}</div>
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        {ch.logoUrl
+                                            ? <img className="channel-logo" src={ch.logoUrl} alt={`Logo de ${ch.name}`} />
+                                            : <span className="channel-logo channel-logo--empty">Sin logo</span>}
                                     </td>
                                     <td>
                                         <div className="channel-ingest">
@@ -120,6 +143,19 @@ export default function ChannelsOverview() {
                                             <ThumbnailUpload className="btn btn--ghost btn--sm" onSelect={(f) => onThumb(ch, f)}>
                                                 Miniatura
                                             </ThumbnailUpload>
+                                            <ThumbnailUpload
+                                                className="btn btn--ghost btn--sm"
+                                                accept={LOGO_ACCEPT}
+                                                title={LOGO_HINT}
+                                                onSelect={(f) => onLogo(ch, f)}
+                                            >
+                                                {ch.logoUrl ? 'Cambiar logo' : 'Subir logo'}
+                                            </ThumbnailUpload>
+                                            {ch.logoUrl && (
+                                                <button className="btn btn--ghost btn--sm" onClick={() => onRemoveLogo(ch)}>
+                                                    Quitar logo
+                                                </button>
+                                            )}
                                             <button className="btn btn--ghost btn--sm" style={{ marginLeft: 8 }} onClick={() => setEditing(ch)}>
                                                 <IconEdit /> Editar
                                             </button>

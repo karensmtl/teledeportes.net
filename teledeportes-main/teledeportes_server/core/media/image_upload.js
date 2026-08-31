@@ -7,7 +7,11 @@ const boom = require('@hapi/boom');
 
 const MEDIA_ROOT = process.env.MEDIA_ROOT || '/media';
 const MAX_IMAGE_MB = Number(process.env.MEDIA_MAX_IMAGE_MB) || 8;
+const MAX_LOGO_MB = Number(process.env.MEDIA_MAX_LOGO_MB) || 2;
 const IMAGE_MIME = /^image\/(jpe?g|png|webp|avif)$/;
+// Logos sit on top of video/artwork, so only alpha-capable formats are taken.
+// JPEG is rejected on purpose — it would show as an opaque box over the hero.
+const LOGO_MIME = /^image\/(png|webp|avif)$/;
 
 const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
@@ -20,18 +24,23 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({
-    storage,
-    limits: { fileSize: MAX_IMAGE_MB * 1024 * 1024 },
-    fileFilter: (_req, file, cb) => {
-        if (IMAGE_MIME.test(file.mimetype)) return cb(null, true);
-        cb(boom.badRequest('La imagen debe ser JPG, PNG, WEBP o AVIF'));
-    },
-});
+function imageUploader(mime, maxMb, message) {
+    return multer({
+        storage,
+        limits: { fileSize: maxMb * 1024 * 1024 },
+        fileFilter: (_req, file, cb) => {
+            if (mime.test(file.mimetype)) return cb(null, true);
+            cb(boom.badRequest(message));
+        },
+    });
+}
+
+const upload = imageUploader(IMAGE_MIME, MAX_IMAGE_MB, 'La imagen debe ser JPG, PNG, WEBP o AVIF');
+const logoUpload = imageUploader(LOGO_MIME, MAX_LOGO_MB, 'El logo debe ser PNG, WEBP o AVIF (con transparencia)');
 
 // Express middleware: parse a single image field, mapping multer errors to HTTP.
-function uploadImageSingle(field) {
-    const mw = upload.single(field);
+function singleField(uploader, field) {
+    const mw = uploader.single(field);
     return (req, res, next) => mw(req, res, (err) => {
         if (!err) return next();
         if (err.isBoom) return next(err);
@@ -40,4 +49,7 @@ function uploadImageSingle(field) {
     });
 }
 
-module.exports = { uploadImageSingle };
+const uploadImageSingle = (field) => singleField(upload, field);
+const uploadLogoSingle = (field) => singleField(logoUpload, field);
+
+module.exports = { uploadImageSingle, uploadLogoSingle };
