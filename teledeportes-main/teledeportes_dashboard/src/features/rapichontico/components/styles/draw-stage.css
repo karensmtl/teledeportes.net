@@ -1,0 +1,575 @@
+/* DrawStage — escenario del sorteo Rapichontico.
+   Vive dentro de .news-site (tema navy oscuro) y usa sus tokens globales.
+   El dorado es el acento propio del sorteo: color de "premio". */
+
+.draw-stage {
+    /* Acento propio de Rapichontico: dorado de premio sobre el navy */
+    --draw-stage-gold: #f0b545;
+    --draw-stage-gold-soft: #ffd98a;
+    --draw-stage-gold-deep: #a8781a;
+    --draw-stage-progress: 0;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    gap: clamp(18px, 3vw, 30px);
+    padding: clamp(20px, 4vw, 44px);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.25)),
+        var(--c-bg-2);
+    color: var(--c-text);
+    font-family: var(--f-display);
+}
+
+/* Cinta de marca arriba: azul TeleDeportes -> naranja -> dorado del sorteo */
+.draw-stage::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0074b2, #e68526 55%, var(--draw-stage-gold));
+    z-index: 1;
+}
+
+/* ---------- ambiente ---------- */
+
+.draw-stage__glow {
+    position: absolute;
+    inset: -35%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(closest-side at 22% 28%, rgba(79, 157, 255, 0.16), transparent 65%),
+        radial-gradient(closest-side at 80% 75%, rgba(230, 133, 38, 0.1), transparent 60%);
+    animation: draw-stage-drift 16s ease-in-out infinite alternate;
+}
+
+.draw-stage--imminent .draw-stage__glow {
+    background:
+        radial-gradient(closest-side at 50% 40%, rgba(226, 53, 78, 0.2), transparent 70%),
+        radial-gradient(closest-side at 20% 80%, rgba(230, 133, 38, 0.12), transparent 60%);
+    animation: draw-stage-alarm 1s ease-in-out infinite;
+}
+
+.draw-stage--revealed .draw-stage__glow {
+    background:
+        radial-gradient(closest-side at 50% 30%, rgba(240, 181, 69, 0.18), transparent 70%),
+        radial-gradient(closest-side at 80% 80%, rgba(79, 157, 255, 0.1), transparent 60%);
+}
+
+@keyframes draw-stage-drift {
+    from { transform: translate3d(-2%, -1%, 0) rotate(-1deg); }
+    to { transform: translate3d(2%, 2%, 0) rotate(1.5deg); }
+}
+
+@keyframes draw-stage-alarm {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+/* ---------- cabecera ---------- */
+
+.draw-stage__topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 20px;
+}
+
+.draw-stage__brand {
+    margin: 0;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.draw-stage__brand-rapi {
+    color: var(--c-accent2);
+}
+
+.draw-stage__brand-chontico {
+    color: var(--draw-stage-gold);
+}
+
+.draw-stage__meta {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.draw-stage__meta-dot {
+    color: var(--c-border);
+}
+
+.draw-stage__meta-time {
+    color: var(--c-body);
+}
+
+/* ---------- arena: tablero + dial ---------- */
+
+.draw-stage__arena {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(20px, 4vw, 48px);
+}
+
+.draw-stage__board {
+    position: relative;
+    display: flex;
+    gap: clamp(8px, 1.8vw, 18px);
+    /* Recorta el brillo celebratorio que barre el tablero */
+    overflow: hidden;
+    padding: 6px;
+    margin: -6px;
+}
+
+/* Slot de dígito: tarjeta tipo split-flap con bisagra central */
+.draw-stage__digit {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(62px, 15vw, 128px);
+    aspect-ratio: 3 / 4;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 48%,
+            rgba(0, 0, 0, 0.3) 52%, rgba(0, 0, 0, 0.12) 100%),
+        var(--c-surface2);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 10px 24px rgba(0, 0, 0, 0.35);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Bisagra del split-flap */
+.draw-stage__digit::after {
+    content: '';
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 50%;
+    height: 2px;
+    transform: translateY(-1px);
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+}
+
+.draw-stage__digit-value {
+    font-size: clamp(2.4rem, 9vw, 5.4rem);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-body);
+}
+
+/* Reposo (countdown): el punto tenue marca el sitio sin prometer nada */
+.draw-stage__digit--idle .draw-stage__digit-value {
+    color: var(--c-muted);
+    opacity: 0.55;
+}
+
+.draw-stage--imminent .draw-stage__digit {
+    border-color: rgba(226, 53, 78, 0.45);
+    animation: draw-stage-edge 1s ease-in-out infinite;
+}
+
+@keyframes draw-stage-edge {
+    0%, 100% {
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+    50% {
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            0 0 22px rgba(226, 53, 78, 0.35);
+    }
+}
+
+/* Rodando: la cifra vibra borrosa, en azul, claramente "aún no es" */
+.draw-stage__digit--rolling .draw-stage__digit-value {
+    color: var(--c-accent2);
+    opacity: 0.8;
+    filter: blur(2px);
+    animation: draw-stage-roll 0.14s steps(2) infinite;
+}
+
+@keyframes draw-stage-roll {
+    0% { transform: translateY(-7%); }
+    100% { transform: translateY(7%); }
+}
+
+/* Revelado: dorado en firme + golpe de aparición */
+.draw-stage__digit--revealed {
+    border-color: rgba(240, 181, 69, 0.55);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 26px rgba(240, 181, 69, 0.22),
+        0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.draw-stage__digit--revealed .draw-stage__digit-value {
+    color: var(--draw-stage-gold-soft);
+    text-shadow: 0 0 18px rgba(240, 181, 69, 0.55);
+    animation: draw-stage-snap 0.45s cubic-bezier(0.2, 1.6, 0.35, 1) both;
+}
+
+@keyframes draw-stage-snap {
+    0% { transform: scale(1.5); opacity: 0; filter: brightness(2.4); }
+    45% { opacity: 1; }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Onda del golpe de revelación */
+.draw-stage__digit--revealed::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    animation: draw-stage-wave 0.6s ease-out both;
+}
+
+@keyframes draw-stage-wave {
+    0% { box-shadow: 0 0 0 0 rgba(240, 181, 69, 0.55); }
+    100% { box-shadow: 0 0 0 18px rgba(240, 181, 69, 0); }
+}
+
+/* Remate al pasar a 'revealed': ola escalonada por slot + barrido de brillo.
+   Se re-dispara porque el selector depende del modificador de la raíz. */
+.draw-stage--revealed .draw-stage__digit-value {
+    animation: draw-stage-settle 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+    animation-delay: calc(var(--draw-stage-slot, 0) * 90ms);
+}
+
+@keyframes draw-stage-settle {
+    0% { transform: translateY(0) scale(1); }
+    40% { transform: translateY(-8%) scale(1.06); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+.draw-stage__sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        linear-gradient(115deg, transparent 30%,
+            rgba(255, 217, 138, 0.28) 50%, transparent 70%);
+    transform: translateX(-100%);
+}
+
+.draw-stage--revealed .draw-stage__sheen {
+    animation: draw-stage-sheen 1.1s ease-out 0.35s both;
+}
+
+@keyframes draw-stage-sheen {
+    0% { opacity: 1; transform: translateX(-100%); }
+    100% { opacity: 1; transform: translateX(100%); }
+}
+
+/* ---------- dial de cuenta regresiva ---------- */
+
+.draw-stage__timer {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+}
+
+.draw-stage__dial {
+    position: relative;
+    width: clamp(120px, 18vw, 176px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+}
+
+.draw-stage__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.draw-stage__ring-track {
+    fill: none;
+    stroke: var(--c-border);
+    stroke-width: 5;
+}
+
+.draw-stage__ring-fill {
+    fill: none;
+    stroke: var(--c-accent);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    /* progress es la fracción transcurrida: el anillo se va llenando */
+    stroke-dashoffset: calc(100 - var(--draw-stage-progress, 0) * 100);
+    transition: stroke-dashoffset 0.4s linear, stroke 0.4s ease;
+}
+
+.draw-stage--imminent .draw-stage__ring-fill {
+    stroke: var(--c-live);
+}
+
+.draw-stage--drawing .draw-stage__ring-fill,
+.draw-stage--revealed .draw-stage__ring-fill {
+    stroke: var(--draw-stage-gold);
+}
+
+.draw-stage__dial-center {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+}
+
+.draw-stage__clock {
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-text);
+}
+
+.draw-stage--imminent .draw-stage__clock {
+    color: var(--c-live);
+    animation: draw-stage-tick 1s ease-in-out infinite;
+}
+
+@keyframes draw-stage-tick {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.09); }
+}
+
+.draw-stage__dial-caption {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.draw-stage__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-live);
+}
+
+.draw-stage__live-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c-live);
+    box-shadow: 0 0 10px rgba(226, 53, 78, 0.8);
+    animation: draw-stage-blink 1s ease-in-out infinite;
+}
+
+@keyframes draw-stage-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+.draw-stage__status {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    text-align: center;
+}
+
+.draw-stage--imminent .draw-stage__status {
+    color: var(--c-live);
+}
+
+.draw-stage--revealed .draw-stage__status {
+    color: var(--draw-stage-gold);
+}
+
+/* ---------- pie: stats + CTA ---------- */
+
+.draw-stage__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding-top: clamp(14px, 2vw, 20px);
+    border-top: 1px solid var(--c-border);
+}
+
+.draw-stage__stats {
+    margin: 0;
+    display: flex;
+    gap: clamp(18px, 3vw, 36px);
+}
+
+.draw-stage__stat {
+    display: grid;
+    gap: 2px;
+}
+
+.draw-stage__stat + .draw-stage__stat {
+    padding-left: clamp(18px, 3vw, 36px);
+    border-left: 1px solid var(--c-border);
+}
+
+.draw-stage__stat-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.draw-stage__stat-value {
+    margin: 0;
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-text);
+}
+
+.draw-stage__stat--mine .draw-stage__stat-value {
+    color: var(--draw-stage-gold);
+}
+
+.draw-stage__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    border: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #e68526, var(--draw-stage-gold));
+    color: var(--c-bg);
+    font-family: var(--f-display);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(230, 133, 38, 0.3);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+}
+
+.draw-stage__cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 12px 28px rgba(230, 133, 38, 0.42);
+}
+
+.draw-stage__cta:active {
+    transform: translateY(0);
+}
+
+.draw-stage__cta:focus-visible {
+    outline: 2px solid var(--c-accent2);
+    outline-offset: 3px;
+}
+
+.draw-stage__cta-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 720px) {
+    .draw-stage__arena {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .draw-stage__board {
+        justify-content: center;
+    }
+
+    .draw-stage__timer {
+        justify-self: center;
+    }
+
+    .draw-stage__footer {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .draw-stage__stats {
+        justify-content: center;
+    }
+
+    .draw-stage__stat {
+        justify-items: center;
+    }
+
+    .draw-stage__cta {
+        justify-content: center;
+    }
+}
+
+/* ---------- menos movimiento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .draw-stage__glow,
+    .draw-stage--imminent .draw-stage__glow,
+    .draw-stage--imminent .draw-stage__digit,
+    .draw-stage--imminent .draw-stage__clock,
+    .draw-stage__live-dot,
+    .draw-stage--revealed .draw-stage__sheen,
+    .draw-stage--revealed .draw-stage__digit-value {
+        animation: none;
+    }
+
+    /* Sin barajado: el slot pendiente queda tenue y quieto */
+    .draw-stage__digit--rolling .draw-stage__digit-value {
+        filter: none;
+        opacity: 0.45;
+        animation: none;
+    }
+
+    /* La revelación conserva solo un fundido corto, sin rebote */
+    .draw-stage__digit--revealed .draw-stage__digit-value {
+        animation: draw-stage-snap-quiet 0.25s ease-out both;
+    }
+
+    .draw-stage__digit--revealed::before {
+        animation: none;
+    }
+
+    .draw-stage__cta:hover {
+        transform: none;
+    }
+}
+
+@keyframes draw-stage-snap-quiet {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

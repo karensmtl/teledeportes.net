@@ -4,4 +4,5 @@
 export const STORAGE_KEYS = {
     LOGOUT_SIGNAL: 'logout_signal',
     UI_PREFS:      'ui_prefs',
+    RAPI_TICKETS:  'rapichontico_tickets',
 };

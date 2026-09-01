@@ -1,0 +1,149 @@
+/* Histórico de sorteos + plan de premios. */
+
+.draw-history {
+    --draw-history-gold: #f0b545;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    padding: clamp(18px, 3vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.draw-history__title {
+    font-family: var(--f-serif);
+    font-size: clamp(21px, 2.6vw, 28px);
+    font-weight: 700;
+    color: var(--c-text);
+}
+
+.draw-history__subtitle {
+    margin-top: 6px;
+    font-family: var(--f-display);
+    font-size: 13px;
+    color: var(--c-muted);
+}
+
+/* La tabla desborda en móvil: scrollea en su propio contenedor, nunca la página. */
+.draw-history__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+}
+
+.draw-history__table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    font-family: var(--f-display);
+}
+
+.draw-history__table th {
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--c-bg-2);
+    border-bottom: 1px solid var(--c-border);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.draw-history__table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 13.5px;
+    color: var(--c-body);
+    vertical-align: middle;
+}
+
+.draw-history__table tr:last-child td { border-bottom: 0; }
+
+.draw-history__row--win { background: rgba(240, 181, 69, .08); }
+
+.draw-history__id,
+.draw-history__when {
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.draw-history__number { display: inline-flex; gap: 4px; }
+
+.draw-history__digit {
+    width: 26px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--c-bg-2);
+    border: 1px solid var(--c-border);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.draw-history__row--win .draw-history__digit {
+    border-color: var(--draw-history-gold);
+    color: var(--draw-history-gold);
+}
+
+.draw-history__mine { white-space: nowrap; }
+.draw-history__none { color: var(--c-muted); }
+.draw-history__win { color: var(--draw-history-gold); font-weight: 700; }
+
+/* ---- plan de premios ---- */
+
+.draw-history__prizes {
+    padding: 16px 18px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+    background: var(--c-bg-2);
+}
+
+.draw-history__prizes-title {
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--draw-history-gold);
+}
+
+.draw-history__prize-list {
+    margin-top: 12px;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+}
+
+.draw-history__prize {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr auto;
+    gap: 10px 16px;
+    align-items: baseline;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--c-border);
+    font-family: var(--f-display);
+}
+
+.draw-history__prize:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.draw-history__prize-label { font-size: 13.5px; font-weight: 700; color: var(--c-text); }
+.draw-history__prize-detail { font-size: 12.5px; color: var(--c-muted); }
+
+.draw-history__prize-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--draw-history-gold);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+    .draw-history__prize { grid-template-columns: 1fr auto; }
+    .draw-history__prize-detail { grid-column: 1 / -1; }
+}

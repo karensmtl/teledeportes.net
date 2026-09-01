@@ -1,0 +1,461 @@
+/* Selector de boletas. Hereda los tokens del sitio público (--c-*), definidos
+   en features/news/layouts/styles/news.css, y el dorado de premio que introdujo
+   el escenario del sorteo. */
+
+.ticket-picker {
+    --ticket-picker-gold: #f0b545;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    padding: clamp(18px, 3vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ---- cabecera + medidor de existencias ---- */
+
+.ticket-picker__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.ticket-picker__title {
+    font-family: var(--f-serif);
+    font-size: clamp(21px, 2.6vw, 28px);
+    font-weight: 700;
+    color: var(--c-text);
+}
+
+.ticket-picker__subtitle {
+    margin-top: 6px;
+    font-family: var(--f-display);
+    font-size: 13px;
+    color: var(--c-muted);
+}
+
+.ticket-picker__stock {
+    display: grid;
+    gap: 4px;
+    min-width: 240px;
+    text-align: right;
+    justify-items: end;
+}
+
+.ticket-picker__stock-value {
+    font-family: var(--f-display);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--c-accent2);
+    font-variant-numeric: tabular-nums;
+}
+
+.ticket-picker__stock-label,
+.ticket-picker__stock-note {
+    font-family: var(--f-display);
+    font-size: 12px;
+    color: var(--c-muted);
+    letter-spacing: .03em;
+}
+
+.ticket-picker__gauge {
+    width: 100%;
+    height: 6px;
+    margin: 6px 0 2px;
+    border-radius: 999px;
+    background: var(--c-bg-2);
+    overflow: hidden;
+}
+
+.ticket-picker__gauge-fill {
+    display: block;
+    height: 100%;
+    width: calc(var(--ticket-picker-sold, 0) * 100%);
+    background: linear-gradient(90deg, var(--c-accent-d), var(--ticket-picker-gold));
+    transition: width .4s ease;
+}
+
+/* ---- barra de herramientas ---- */
+
+.ticket-picker__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: center;
+    padding: 14px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+    background: var(--c-bg-2);
+}
+
+.ticket-picker__search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: 1 1 230px;
+    padding: 0 12px;
+    height: 42px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-muted);
+}
+
+.ticket-picker__search:focus-within {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+}
+
+.ticket-picker__search-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: var(--c-text);
+    font-family: var(--f-display);
+    font-size: 15px;
+    letter-spacing: .12em;
+    font-variant-numeric: tabular-nums;
+}
+
+.ticket-picker__search-input::placeholder {
+    color: var(--c-muted);
+    letter-spacing: .02em;
+}
+
+.ticket-picker__range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ticket-picker__step {
+    width: 34px;
+    height: 42px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-body);
+    font-size: 20px;
+    line-height: 1;
+    transition: background var(--transition), color var(--transition);
+}
+
+.ticket-picker__step:hover {
+    background: var(--c-surface2);
+    color: var(--c-accent2);
+}
+
+.ticket-picker__select {
+    height: 42px;
+    padding: 0 10px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-text);
+    font-family: var(--f-display);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+}
+
+.ticket-picker__random {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 18px;
+    border: 1px solid var(--c-accent);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--c-accent2);
+    font-family: var(--f-display);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    transition: background var(--transition), color var(--transition);
+}
+
+.ticket-picker__random:hover:not(:disabled) {
+    background: var(--c-accent);
+    color: #06131f;
+}
+
+.ticket-picker__random:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.ticket-picker__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--f-display);
+    font-size: 13px;
+    color: var(--c-muted);
+    cursor: pointer;
+}
+
+.ticket-picker__filter input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--c-accent);
+    cursor: pointer;
+}
+
+.ticket-picker__hint {
+    font-family: var(--f-display);
+    font-size: 12.5px;
+    color: var(--c-muted);
+}
+
+/* ---- resultado de búsqueda ---- */
+
+.ticket-picker__result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 12px 16px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-2);
+}
+
+.ticket-picker__result--free { border-color: rgba(79, 157, 255, .55); }
+.ticket-picker__result--taken { border-color: rgba(226, 53, 78, .45); }
+
+.ticket-picker__result-number {
+    font-family: var(--f-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-text);
+}
+
+.ticket-picker__result-text {
+    flex: 1;
+    font-family: var(--f-display);
+    font-size: 13.5px;
+    color: var(--c-body);
+}
+
+.ticket-picker__result-cta {
+    height: 36px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--c-accent);
+    color: #06131f;
+    font-family: var(--f-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.ticket-picker__result-cta:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ---- grilla de números ---- */
+
+.ticket-picker__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+}
+
+.ticket-picker__cell {
+    height: 42px;
+    border-radius: var(--radius);
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-2);
+    color: var(--c-body);
+    font-family: var(--f-display);
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    font-variant-numeric: tabular-nums;
+    transition: transform var(--transition), background var(--transition),
+                border-color var(--transition), color var(--transition);
+}
+
+.ticket-picker__cell--free:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: var(--c-accent);
+    color: var(--c-text);
+    background: var(--c-surface2);
+}
+
+/* Tomada: presente pero apagada. Se ve el número y se entiende que no está. */
+.ticket-picker__cell--taken {
+    background: transparent;
+    border-style: dashed;
+    color: var(--c-muted);
+    opacity: .5;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.ticket-picker__cell--mine {
+    background: rgba(240, 181, 69, .14);
+    border-color: var(--ticket-picker-gold);
+    color: var(--ticket-picker-gold);
+    cursor: default;
+}
+
+.ticket-picker__cell--selected {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: #06131f;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(79, 157, 255, .28);
+}
+
+.ticket-picker__cell:disabled:not(.ticket-picker__cell--taken):not(.ticket-picker__cell--mine) {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+/* ---- leyenda ---- */
+
+.ticket-picker__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    list-style: none;
+    font-family: var(--f-display);
+    font-size: 12px;
+    color: var(--c-muted);
+}
+
+.ticket-picker__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.ticket-picker__legend-item::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-2);
+}
+
+.ticket-picker__legend-item--taken::before { border-style: dashed; background: transparent; opacity: .5; }
+.ticket-picker__legend-item--mine::before { background: rgba(240, 181, 69, .3); border-color: var(--ticket-picker-gold); }
+.ticket-picker__legend-item--selected::before { background: var(--c-accent); border-color: var(--c-accent); }
+
+/* ---- carrito ---- */
+
+.ticket-picker__cart {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+    background: var(--c-bg-2);
+    transition: border-color var(--transition);
+}
+
+.ticket-picker__cart--active {
+    border-color: var(--c-accent);
+    box-shadow: 0 -6px 24px rgba(6, 19, 31, .45);
+}
+
+.ticket-picker__cart-list {
+    flex: 1 1 240px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    min-height: 34px;
+}
+
+.ticket-picker__cart-empty {
+    font-family: var(--f-display);
+    font-size: 13px;
+    color: var(--c-muted);
+}
+
+.ticket-picker__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--c-accent);
+    border-radius: 999px;
+    background: rgba(79, 157, 255, .12);
+    color: var(--c-accent2);
+    font-family: var(--f-display);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    font-variant-numeric: tabular-nums;
+}
+
+.ticket-picker__chip:hover {
+    background: rgba(226, 53, 78, .16);
+    border-color: var(--c-live);
+    color: #ffb3bd;
+}
+
+.ticket-picker__cart-total { display: grid; gap: 2px; }
+
+.ticket-picker__cart-label {
+    font-family: var(--f-display);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.ticket-picker__cart-value {
+    font-family: var(--f-display);
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--c-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.ticket-picker__pay {
+    height: 46px;
+    padding: 0 30px;
+    border: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #e68526, var(--ticket-picker-gold));
+    color: #26170a;
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    transition: filter var(--transition);
+}
+
+.ticket-picker__pay:hover:not(:disabled) { filter: brightness(1.08); }
+
+.ticket-picker__pay:disabled {
+    background: var(--c-surface2);
+    color: var(--c-muted);
+    cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+    .ticket-picker__stock { min-width: 0; text-align: left; justify-items: start; }
+    .ticket-picker__grid { grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); }
+    .ticket-picker__pay { flex: 1 1 100%; }
+}
